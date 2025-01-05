@@ -18,7 +18,7 @@ public class ElevatorSubsystem extends SubsystemBase
     private SparkMax m_follower;
     private PIDController pidController;
     private ArmFeedforward feedforward;
-
+    private boolean inTolerance = false;
 
     public ElevatorSubsystem()
     {
@@ -35,16 +35,6 @@ public class ElevatorSubsystem extends SubsystemBase
         pidController = new PIDController(Constants.ElevatorConstants.kP, Constants.ElevatorConstants.kI, Constants.ElevatorConstants.kD);
         pidController.setTolerance(Constants.ElevatorConstants.PID_TOLERANCE);
         feedforward = new ArmFeedforward(Constants.ElevatorConstants.kS, Constants.ElevatorConstants.kG, Constants.ElevatorConstants.kV);
-
-
-
-
-    }
-
-    @Override
-    public void periodic()
-    {
-        
     }
 
     public void moveElevator(double speed)
@@ -54,6 +44,8 @@ public class ElevatorSubsystem extends SubsystemBase
 
     public void setPostion(double positionMeters)
     {
+        inTolerance = pidController.atSetpoint();
+
         pidController.setSetpoint(positionMeters);
         double pidOutput = pidController.calculate(motorPostionToMeters(m_leader.getEncoder().getPosition()),positionMeters);
         double feedforwardOutput = feedforward.calculate(
@@ -86,5 +78,10 @@ public class ElevatorSubsystem extends SubsystemBase
     public void zeroElevator()
     {
         m_leader.getEncoder().setPosition(0);
+    }
+
+    public boolean getInTolerance()
+    {
+        return inTolerance;
     }
 }

@@ -15,6 +15,7 @@ public class WristSubsystem extends SubsystemBase{
     private SparkBaseConfig wristMotorConfig;
     private PIDController wristPidController;
     private ArmFeedforward wristFeedForward;
+    private boolean inTolerance = false;
 
     public WristSubsystem() {
         wristMotor = new SparkMax(Constants.WristConstants.WRIST_MOTOR_ID, MotorType.kBrushless);
@@ -39,6 +40,8 @@ public class WristSubsystem extends SubsystemBase{
     // hold the wrist at a current pose using pid and feed forward. i really hope i dont need to use this
     public void setPosition(double positionRadians)
     {
+        inTolerance = wristPidController.atSetpoint();
+
         wristPidController.setSetpoint(positionRadians);
 
         double wristRadians = (wristMotor.getEncoder().getPosition() * 2 * Math.PI) / 25; // convert to radians then compensate for 25:1 gear ratio
@@ -56,6 +59,11 @@ public class WristSubsystem extends SubsystemBase{
 
         // set the motor speed
         wristMotor.set(speed);
+    }
+
+    public boolean getInTolerance()
+    {
+        return inTolerance;
     }
 
     public void stopWrist()
