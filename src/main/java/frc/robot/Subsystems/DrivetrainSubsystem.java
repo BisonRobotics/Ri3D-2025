@@ -13,7 +13,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import frc.robot.Constants;
 
-public class Drivetrain extends SubsystemBase
+public class DrivetrainSubsystem extends SubsystemBase
 {
     private SparkMax m_leftMotorLeader;
     private SparkMax m_rightMotorLeader;
@@ -21,12 +21,12 @@ public class Drivetrain extends SubsystemBase
     private SparkMax m_rightMotorFollower;
     private DifferentialDrive m_robotDrive;
 
-    public Drivetrain()
+    public DrivetrainSubsystem()
     {
-        m_leftMotorLeader = new SparkMax(Constants.Drivetrain.leftmotor_port, MotorType.kBrushless);
-        m_rightMotorLeader = new SparkMax(Constants.Drivetrain.rightmotor_port, MotorType.kBrushless);
-        m_rightMotorFollower = new SparkMax(Constants.Drivetrain.rightmotor_follower_port, MotorType.kBrushless);
-        m_leftMotorFollower = new SparkMax(Constants.Drivetrain.leftmotor_follower_port, MotorType.kBrushless);
+        m_leftMotorLeader = new SparkMax(Constants.DrivetrainConstants.leftmotor_port, MotorType.kBrushless);
+        m_rightMotorLeader = new SparkMax(Constants.DrivetrainConstants.rightmotor_port, MotorType.kBrushless);
+        m_rightMotorFollower = new SparkMax(Constants.DrivetrainConstants.rightmotor_follower_port, MotorType.kBrushless);
+        m_leftMotorFollower = new SparkMax(Constants.DrivetrainConstants.leftmotor_follower_port, MotorType.kBrushless);
         
         SparkMaxConfig rightLeaderConfig = new SparkMaxConfig();
         rightLeaderConfig.inverted(true);

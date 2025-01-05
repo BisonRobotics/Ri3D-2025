@@ -2,7 +2,7 @@ package frc.robot;
 
 public class Constants 
 {
-    public static final class Drivetrain
+    public static final class DrivetrainConstants
     {
         public static final int leftmotor_port = 3;
         public static final int rightmotor_port = 2;
@@ -38,6 +38,12 @@ public class Constants
         // Limits
         public static final double WRIST_LIMIT_TOP = 0;
         public static final double WRIST_LIMIT_BOTTOM = 0;
+    }
+
+    public static final class ElevatorConstants
+    {
+        public static final int leaderPort = 0; // TODO: Change
+        public static final int followerPort = 1; // TODO: Change
     }
 }
 
