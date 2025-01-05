@@ -8,7 +8,7 @@ import com.revrobotics.spark.config.SparkMaxConfig;
 
 import edu.wpi.first.math.controller.ArmFeedforward;
 import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.wpilibj.motorcontrol.MotorController;
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
@@ -18,6 +18,8 @@ public class ElevatorSubsystem extends SubsystemBase
     private SparkMax m_follower;
     private PIDController pidController;
     private ArmFeedforward feedforward;
+    private DigitalInput m_limitSwitch;
+    
     private boolean inTolerance = false;
 
     public ElevatorSubsystem()
@@ -35,6 +37,8 @@ public class ElevatorSubsystem extends SubsystemBase
         pidController = new PIDController(Constants.ElevatorConstants.kP, Constants.ElevatorConstants.kI, Constants.ElevatorConstants.kD);
         pidController.setTolerance(Constants.ElevatorConstants.PID_TOLERANCE);
         feedforward = new ArmFeedforward(Constants.ElevatorConstants.kS, Constants.ElevatorConstants.kG, Constants.ElevatorConstants.kV);
+
+        m_limitSwitch = new DigitalInput(Constants.ElevatorConstants.limitSwitchPort);
     }
 
     public void moveElevator(double speed)
@@ -56,6 +60,13 @@ public class ElevatorSubsystem extends SubsystemBase
         //ensure @pram speed is within -1 to 1
         speed = ( speed > 1) ? 1 :speed;
         speed = ( speed < -1) ? -1 : speed;
+
+        // TODO: Test if positive speed is up the elevator and adjust if statement
+        if (m_limitSwitch.get() && speed > 0)
+        {
+            speed = 0;
+            zeroElevator();
+        }
 
         // set the motor speed
         m_leader.set(speed);

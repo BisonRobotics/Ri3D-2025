@@ -7,6 +7,7 @@ import com.revrobotics.spark.config.SparkBaseConfig;
 
 import edu.wpi.first.math.controller.ArmFeedforward;
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
@@ -15,9 +16,12 @@ public class WristSubsystem extends SubsystemBase{
     private SparkBaseConfig wristMotorConfig;
     private PIDController wristPidController;
     private ArmFeedforward wristFeedForward;
+    private DigitalInput m_limitSwitch;
+    
     private boolean inTolerance = false;
 
-    public WristSubsystem() {
+    public WristSubsystem() 
+    {
         wristMotor = new SparkMax(Constants.WristConstants.WRIST_MOTOR_ID, MotorType.kBrushless);
 
         wristMotorConfig.inverted(false);
@@ -29,6 +33,8 @@ public class WristSubsystem extends SubsystemBase{
         wristPidController.setTolerance(Constants.WristConstants.WRIST_PID_TOLERANCE);
 
         wristFeedForward = new ArmFeedforward(Constants.WristConstants.WRIST_kS, Constants.WristConstants.WRIST_kG, Constants.WristConstants.WRIST_kV);
+
+        m_limitSwitch = new DigitalInput(Constants.WristConstants.limitSwitchPort);
     }
 
     // zero the wrist encoder
@@ -40,6 +46,7 @@ public class WristSubsystem extends SubsystemBase{
     // hold the wrist at a current pose using pid and feed forward. i really hope i dont need to use this
     public void setPosition(double positionRadians)
     {
+
         inTolerance = wristPidController.atSetpoint();
 
         wristPidController.setSetpoint(positionRadians);
@@ -56,6 +63,12 @@ public class WristSubsystem extends SubsystemBase{
         // ensure @param speed is within -1 to 1
         speed = (speed > 1) ? 1 : speed;
         speed = (speed < -1) ? -1 : speed;
+
+        // TODO: Test if positive speed is up the elevator and adjust if statement
+        if (m_limitSwitch.get() && speed > 0)
+        {
+            speed = 0;
+        }
 
         // set the motor speed
         wristMotor.set(speed);

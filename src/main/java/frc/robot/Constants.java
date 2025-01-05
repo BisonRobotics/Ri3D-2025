@@ -24,8 +24,8 @@ public class Constants
     }
 
     public static final class WristConstants {
-        public static final int WRIST_MOTOR_ID = 100; // !!!!! needs value !!!!!
-
+        public static final int WRIST_MOTOR_ID = 100; // TODO: !!!!! needs value !!!!!
+        public static final int limitSwitchPort = 0; // TODO: Set this value
         // PID Constants TODO: tune
         public static final double WRIST_PID_TOLERANCE = 0.1;
         public static final double WRIST_kP = 0;
@@ -40,13 +40,21 @@ public class Constants
         public static final double WRIST_LIMIT_BOTTOM = 0;
 
         public static final double WRIST_PARK_ANGLE = 0; //where the wrist should go when idle
+    
+        // LEVEL CONSTANTS
+        public static final double L3 = 0.0; // TODO: Change
+        public static final double L2 = 0.0; // TODO: Change
+        public static final double HUMAN_PICKUP = 0.0; // TODO: Change
+        public static final double PLACE_ALGAE = 0.0; // TODO: Change
+        public static final double PICKUP_ALGAE_L1 = 0.0; // TODO: Change
+        public static final double PICKUP_ALGAE_L2 = 0.0; // TODO: Change
     }
 
     public static final class ElevatorConstants
     {
         public static final int leaderPort = 0; // TODO: Change
         public static final int followerPort = 1; // TODO: Change
-
+        public static final int limitSwitchPort = 0; // TODO: Change
         public static final double PID_TOLERANCE = 0.1;
         public static final double kP =0.0;
         public static final double kI = 0;
@@ -61,6 +69,14 @@ public class Constants
         public static final double MOTOR_ENCODER_POSITION_COEFFICENT = ELEVATOR_HEIGHT / (MOTOR_TOP - MOTOR_BOTTOM);
 
         public static final double ELEVATOR_PARK_HEIGHT = 0.1; //where the elevator goes when idle
+    
+        // LEVEL CONSTANTS
+        public static final double L3 = 0.0; // TODO: Change
+        public static final double L2 = 0.0; // TODO: Change
+        public static final double HUMAN_PICKUP = 0.0; // TODO: Change
+        public static final double PLACE_ALGAE = 0.0; // TODO: Change
+        public static final double PICKUP_ALGAE_L1 = 0.0; // TODO: Change
+        public static final double PICKUP_ALGAE_L2 = 0.0; // TODO: Change
     }
 }
 
