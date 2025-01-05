@@ -38,12 +38,15 @@ public class Constants
         // Limits
         public static final double WRIST_LIMIT_TOP = 0;
         public static final double WRIST_LIMIT_BOTTOM = 0;
+
+        public static final double WRIST_PARK_ANGLE = 0; //where the wrist should go when idle
     }
 
     public static final class ElevatorConstants
     {
         public static final int leaderPort = 0; // TODO: Change
         public static final int followerPort = 1; // TODO: Change
+
         public static final double PID_TOLERANCE = 0.1;
         public static final double kP =0.0;
         public static final double kI = 0;
@@ -51,11 +54,13 @@ public class Constants
         public static final double kS = 0;
         public static final double kG = 0;
         public static final double kV = 0;
+
         public static final double ELEVATOR_HEIGHT =1.1684; // in meters
         public static final double MOTOR_BOTTOM = 0; // TODO: Change
         public static final double MOTOR_TOP = 10000; // TODO: Change
         public static final double MOTOR_ENCODER_POSITION_COEFFICENT = ELEVATOR_HEIGHT / (MOTOR_TOP - MOTOR_BOTTOM);
 
+        public static final double ELEVATOR_PARK_HEIGHT = 0.1; //where the elevator goes when idle
     }
 }
 
