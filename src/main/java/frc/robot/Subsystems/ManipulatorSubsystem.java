@@ -31,7 +31,7 @@ public class ManipulatorSubsystem extends SubsystemBase{
 
         // config middle motor
         middleMotorConfig.inverted(false);
-        middleMotorConfig.follow(topMotor.getDeviceId());
+        middleMotorConfig.follow(topMotor.getDeviceId(), true);
         middleMotorConfig.idleMode(SparkBaseConfig.IdleMode.kBrake);
 
         // config bottom motor
