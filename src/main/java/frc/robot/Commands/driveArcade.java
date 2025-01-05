@@ -1,4 +1,4 @@
-package frc.robot.commands;
+package frc.robot.Commands;
 
 import java.util.function.DoubleSupplier;
 
@@ -6,15 +6,15 @@ import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
-import frc.robot.subsystems.Drivetrain;
+import frc.robot.Subsystems.Drivetrain;
 
-public class drive extends Command
+public class driveArcade extends Command
 {
     private final Drivetrain m_drivetrain;
     private final DoubleSupplier m_leftspeed;
     private final DoubleSupplier m_rightspeed;
 
-    public drive(DoubleSupplier leftspeed, DoubleSupplier rightspeed, Drivetrain subsystem)
+    public driveArcade(DoubleSupplier leftspeed, DoubleSupplier rightspeed, Drivetrain subsystem)
     {
         addRequirements(subsystem);
         m_leftspeed = leftspeed;
@@ -27,7 +27,7 @@ public class drive extends Command
     {
         SmartDashboard.putNumber("Left Speed", m_leftspeed.getAsDouble());
         SmartDashboard.putNumber("Right Speed", m_rightspeed.getAsDouble());
-        m_drivetrain.drive(
+        m_drivetrain.driveArcade(
             MathUtil.applyDeadband(
                 m_leftspeed.getAsDouble(),
                 Constants.Drivetrain.stickDeadband

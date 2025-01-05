@@ -3,8 +3,8 @@ package frc.robot;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
-import frc.robot.commands.driveTank;
-import frc.robot.subsystems.Drivetrain;
+import frc.robot.Commands.driveArcade;
+import frc.robot.Subsystems.Drivetrain;
 
 public class RobotContainer 
 {
@@ -19,7 +19,7 @@ public class RobotContainer
 	private void configureBindings() 
 	{
 		m_drivetrain.setDefaultCommand(
-			new drive(() -> m_controller.getY(), () -> m_controller.getX(), m_drivetrain));
+			new driveArcade(() -> m_controller.getY(), () -> m_controller.getX(), m_drivetrain));
 	}
 
 	public Command getAutonomousCommand() 
