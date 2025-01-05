@@ -42,9 +42,9 @@ public class Drivetrain extends SubsystemBase
         SmartDashboard.putNumber("Right Motor", m_rightMotor.get());
     }
 
-    public void driveTank(double left, double right)
+    public void drive(double left, double right)
     {
-        m_robotDrive.tankDrive(left, right); // when left is positive: counter clockwise; when right is positive: clockwise
+        m_robotDrive.arcadeDrive(left, right); // when left is positive: counter clockwise; when right is positive: clockwise
     }
 }
 

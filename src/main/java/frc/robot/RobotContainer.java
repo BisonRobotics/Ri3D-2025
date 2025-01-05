@@ -19,7 +19,7 @@ public class RobotContainer
 	private void configureBindings() 
 	{
 		m_drivetrain.setDefaultCommand(
-			new driveTank(() -> m_controller.getY(), () -> m_controller.getX() ,m_drivetrain));
+			new drive(() -> m_controller.getY(), () -> m_controller.getX(), m_drivetrain));
 	}
 
 	public Command getAutonomousCommand() 
