@@ -18,6 +18,8 @@ public class DefaultWristCommand extends Command{
     @Override
     public void execute()
     {
+        wristSubsystem.stopWrist();
+        
         if (!wristSubsystem.getInTolerance())
         {
             wristSubsystem.setPosition(Constants.WristConstants.WRIST_PARK_ANGLE);
