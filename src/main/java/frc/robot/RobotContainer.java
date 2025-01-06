@@ -3,7 +3,6 @@ package frc.robot;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
-import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.Commands.*;
 import frc.robot.Subsystems.*;
 
@@ -14,6 +13,7 @@ public class RobotContainer
 	private final DrivetrainSubsystem m_drivetrain = new DrivetrainSubsystem();
 	private final ElevatorSubsystem m_elevator = new ElevatorSubsystem();
 	private final WristSubsystem m_wrist = new WristSubsystem();
+	private final ManipulatorSubsystem m_manipulatorSubsystem = new ManipulatorSubsystem();
 
 	public RobotContainer() 
 	{
@@ -26,7 +26,7 @@ public class RobotContainer
 			new driveArcade(() -> m_controller.getY(), () -> m_controller.getX(), m_drivetrain));
 
 		m_elevator.setDefaultCommand(
-		 	new ElevatorMindCommand(() -> m_controller.getPOV(), () -> m_controller.getRawButtonPressed(3), () -> m_controller.getRawButton(4), m_elevator, m_wrist));
+		 	new MindControlCommand(() -> m_controller.getPOV(), () -> m_controller.getRawButtonPressed(3), () -> m_controller.getRawButtonPressed(4), () -> m_controller.getRawButtonPressed(1), () -> m_controller.getRawButtonPressed(2), m_elevator, m_wrist, m_manipulatorSubsystem));
 	}
 
 	public Command getAutonomousCommand() 

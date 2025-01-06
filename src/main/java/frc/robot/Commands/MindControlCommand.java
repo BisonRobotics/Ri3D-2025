@@ -6,23 +6,30 @@ import java.util.function.DoubleSupplier;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
 import frc.robot.Subsystems.ElevatorSubsystem;
+import frc.robot.Subsystems.ManipulatorSubsystem;
 import frc.robot.Subsystems.WristSubsystem;
 
-public class ElevatorMindCommand extends Command
+public class MindControlCommand extends Command
 {
     private DoubleSupplier m_pov;
     private ElevatorSubsystem m_elevator;
     private WristSubsystem m_wrist;
     private BooleanSupplier m_button3pressed;
     private BooleanSupplier m_button4pressed;
+    private BooleanSupplier m_button1pressed;
+    private BooleanSupplier m_button2pressed;
+    private ManipulatorSubsystem m_manipulatorSubsystem;
 
-    public ElevatorMindCommand(DoubleSupplier pov, BooleanSupplier button3pressed, BooleanSupplier button4pressed, ElevatorSubsystem elevator, WristSubsystem wrist)
+    public MindControlCommand(DoubleSupplier pov, BooleanSupplier button3pressed, BooleanSupplier button4pressed, BooleanSupplier button1pressed, BooleanSupplier button2pressed, ElevatorSubsystem elevator, WristSubsystem wrist, ManipulatorSubsystem manipulatorSubsystem)
     {
         m_pov = pov;
         m_elevator = elevator;
         m_wrist = wrist;
         m_button3pressed = button3pressed;
         m_button4pressed = button4pressed;
+        m_button1pressed = button1pressed;
+        m_button2pressed = button2pressed;
+        m_manipulatorSubsystem = manipulatorSubsystem;
     }
 
     @Override
@@ -51,15 +58,25 @@ public class ElevatorMindCommand extends Command
                     break;
             }
 
-            if (m_button3pressed.getAsBoolean())
+            if (m_button3pressed.getAsBoolean()) // left button on joystick
             {
                 new ElevatorToCommand(m_elevator, m_wrist, Constants.ElevatorConstants.PICKUP_ALGAE_L1, Constants.WristConstants.PICKUP_ALGAE_L1).wait();
             }
 
-            if (m_button4pressed.getAsBoolean())
+            if (m_button4pressed.getAsBoolean()) // right button on joystick
             {
                 new ElevatorToCommand(m_elevator, m_wrist, Constants.ElevatorConstants.PICKUP_ALGAE_L2, Constants.ElevatorConstants.PICKUP_ALGAE_L2).wait();
             }
+
+            if (m_button1pressed.getAsBoolean()) // trigger
+            {
+                new ManipulatorCommand(m_manipulatorSubsystem, false).wait();
+            }
+            else if (m_button2pressed.getAsBoolean()) // thumb button
+            {
+                new ManipulatorCommand(m_manipulatorSubsystem, true).wait();
+            }
+            
         }
         catch (InterruptedException e)
         {
