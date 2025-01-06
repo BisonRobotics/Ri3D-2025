@@ -4,6 +4,7 @@ import java.util.function.BooleanSupplier;
 import java.util.function.DoubleSupplier;
 
 import edu.wpi.first.wpilibj2.command.Command;
+
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import frc.robot.Constants;
 import frc.robot.Subsystems.ElevatorSubsystem;
@@ -25,6 +26,7 @@ public class MindControlCommand extends Command
         m_wrist = wrist;
         m_button3pressed = button3pressed;
         m_button4pressed = button4pressed;
+        m_manipulatorSubsystem = manipulatorSubsystem;
         m_button10pressed = button10pressed;
     }
 
@@ -54,16 +56,25 @@ public class MindControlCommand extends Command
                     break;
             }
 
-            if (m_button3pressed.getAsBoolean())
+            if (m_button3pressed.getAsBoolean()) // left button on joystick
             {
                 new ElevatorToCommand(m_elevator, m_wrist, Constants.ElevatorConstants.PICKUP_ALGAE_L1, Constants.WristConstants.PICKUP_ALGAE_L1).wait();
             }
-
-            if (m_button4pressed.getAsBoolean())
+            
+            if (m_button4pressed.getAsBoolean()) // right button on joystick
             {
                 new ElevatorToCommand(m_elevator, m_wrist, Constants.ElevatorConstants.PICKUP_ALGAE_L2, Constants.ElevatorConstants.PICKUP_ALGAE_L2).wait();
             }
-
+            
+            if (m_button1pressed.getAsBoolean()) // trigger
+            {
+                new ManipulatorCommand(m_manipulatorSubsystem, false).wait();
+            }
+            else if (m_button2pressed.getAsBoolean()) // thumb button
+            {
+                new ManipulatorCommand(m_manipulatorSubsystem, true).wait();
+            }
+            
             if (m_button10pressed.getAsBoolean())
             {
                 new ParallelCommandGroup(new DefaultElevatorCommand(m_elevator), new DefaultWristCommand(m_wrist)).wait();

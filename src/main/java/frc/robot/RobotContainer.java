@@ -13,6 +13,7 @@ public class RobotContainer
 	private final DrivetrainSubsystem m_drivetrain = new DrivetrainSubsystem();
 	private final ElevatorSubsystem m_elevator = new ElevatorSubsystem();
 	private final WristSubsystem m_wrist = new WristSubsystem();
+	private final ManipulatorSubsystem m_manipulatorSubsystem = new ManipulatorSubsystem();
 
 	public RobotContainer() 
 	{
