@@ -4,9 +4,10 @@ import java.util.function.BooleanSupplier;
 import java.util.function.DoubleSupplier;
 
 import edu.wpi.first.wpilibj2.command.Command;
+
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import frc.robot.Constants;
 import frc.robot.Subsystems.ElevatorSubsystem;
-import frc.robot.Subsystems.ManipulatorSubsystem;
 import frc.robot.Subsystems.WristSubsystem;
 
 public class MindControlCommand extends Command
@@ -16,20 +17,17 @@ public class MindControlCommand extends Command
     private WristSubsystem m_wrist;
     private BooleanSupplier m_button3pressed;
     private BooleanSupplier m_button4pressed;
-    private BooleanSupplier m_button1pressed;
-    private BooleanSupplier m_button2pressed;
-    private ManipulatorSubsystem m_manipulatorSubsystem;
+    private BooleanSupplier m_button10pressed;
 
-    public MindControlCommand(DoubleSupplier pov, BooleanSupplier button3pressed, BooleanSupplier button4pressed, BooleanSupplier button1pressed, BooleanSupplier button2pressed, ElevatorSubsystem elevator, WristSubsystem wrist, ManipulatorSubsystem manipulatorSubsystem)
+    public MindControlCommand(DoubleSupplier pov, BooleanSupplier button3pressed, BooleanSupplier button4pressed, BooleanSupplier button10pressed, ElevatorSubsystem elevator, WristSubsystem wrist)
     {
         m_pov = pov;
         m_elevator = elevator;
         m_wrist = wrist;
         m_button3pressed = button3pressed;
         m_button4pressed = button4pressed;
-        m_button1pressed = button1pressed;
-        m_button2pressed = button2pressed;
         m_manipulatorSubsystem = manipulatorSubsystem;
+        m_button10pressed = button10pressed;
     }
 
     @Override
@@ -62,12 +60,12 @@ public class MindControlCommand extends Command
             {
                 new ElevatorToCommand(m_elevator, m_wrist, Constants.ElevatorConstants.PICKUP_ALGAE_L1, Constants.WristConstants.PICKUP_ALGAE_L1).wait();
             }
-
+            
             if (m_button4pressed.getAsBoolean()) // right button on joystick
             {
                 new ElevatorToCommand(m_elevator, m_wrist, Constants.ElevatorConstants.PICKUP_ALGAE_L2, Constants.ElevatorConstants.PICKUP_ALGAE_L2).wait();
             }
-
+            
             if (m_button1pressed.getAsBoolean()) // trigger
             {
                 new ManipulatorCommand(m_manipulatorSubsystem, false).wait();
@@ -77,6 +75,10 @@ public class MindControlCommand extends Command
                 new ManipulatorCommand(m_manipulatorSubsystem, true).wait();
             }
             
+            if (m_button10pressed.getAsBoolean())
+            {
+                new ParallelCommandGroup(new DefaultElevatorCommand(m_elevator), new DefaultWristCommand(m_wrist)).wait();
+            }
         }
         catch (InterruptedException e)
         {

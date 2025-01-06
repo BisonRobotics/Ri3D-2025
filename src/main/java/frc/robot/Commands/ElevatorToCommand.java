@@ -5,7 +5,8 @@ import frc.robot.Constants;
 import frc.robot.Subsystems.ElevatorSubsystem;
 import frc.robot.Subsystems.WristSubsystem;
 
-public class ElevatorToCommand extends Command{
+public class ElevatorToCommand extends Command
+{
     
     private ElevatorSubsystem elevatorSubsystem;
     private WristSubsystem wristSubsystem;
