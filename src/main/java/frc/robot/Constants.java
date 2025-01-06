@@ -23,7 +23,8 @@ public class Constants
         public static final double PLACE_SPEED = 0.2;
     }
 
-    public static final class WristConstants {
+    public static final class WristConstants 
+    {
         public static final int WRIST_MOTOR_ID = 100; // TODO: !!!!! needs value !!!!!
         public static final int limitSwitchPort = 0; // TODO: Set this value
         // PID Constants TODO: tune
@@ -35,6 +36,8 @@ public class Constants
         public static final double WRIST_kG = 0; // TODO: Tune
         public static final double WRIST_kV = 0;
 
+        public static final double WRIST_SPEED_MODIFIER = 0.1; // 10%
+        
         // Limits
         public static final double WRIST_LIMIT_TOP = 0;
         public static final double WRIST_LIMIT_BOTTOM = 0;
@@ -63,6 +66,7 @@ public class Constants
         public static final double kG = 0; //TODO: Tune
         public static final double kV = 0;
 
+        public static final double ELEVATOR_SPEED_MODIFIER = 0.1; // 10%
         public static final double ELEVATOR_HEIGHT =1.1684; // in meters
         public static final double MOTOR_BOTTOM = 0; // TODO: Change
         public static final double MOTOR_TOP = 10000; // TODO: Change
