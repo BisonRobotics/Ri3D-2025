@@ -4,19 +4,19 @@ public class Constants
 {
     public static final class DrivetrainConstants
     {
-        public static final int leftmotor_port = 3;
-        public static final int rightmotor_port = 2;
-        public static final int leftmotor_follower_port = 4;
-        public static final int rightmotor_follower_port = 7;
+        public static final int leftmotor_port = 2;
+        public static final int rightmotor_port = 9;
+        public static final int leftmotor_follower_port = 3;
+        public static final int rightmotor_follower_port = 4;
 
         public static final int controller_port = 0;
-        public static final double stickDeadband = 0.1; // TODO: Test me
+        public static final double stickDeadband = 0.1;
     }
 
     public static final class ManipulatorConstants {
-        public static final int BOTTOM_MANIPULATOR_MOTOR_ID = 100; // !!!!!! needs value !!!!!!
-        public static final int MIDDLE_MANIPULATOR_MOTOR_ID = 100; // !!!!!! needs value !!!!!!
-        public static final int TOP_MANIPULATOR_MOTOR_ID = 100; // !!!!! needs value !!!!!
+        public static final int BOTTOM_MANIPULATOR_MOTOR_ID = 8;
+        public static final int MIDDLE_MANIPULATOR_MOTOR_ID = 5;
+        public static final int TOP_MANIPULATOR_MOTOR_ID = 7;
 
         public static final double INTAKE_SPEED = 0.3;
         public static final double HOLD_SPEED = 0.01;
@@ -55,10 +55,10 @@ public class Constants
     public static final class ElevatorConstants
     {
         public static final int leaderPort = 0; // TODO: Change
-        public static final int followerPort = 1; // TODO: Change
+        public static final int followerPort = 6;
         public static final int limitSwitchPort = 0; // TODO: Change
         public static final double PID_TOLERANCE = 0.1;
-        public static final double kP =0.0; // TODO: Tune
+        public static final double kP = 0.0; // TODO: Tune
         public static final double kI = 0;
         public static final double kD = 0;
         public static final double kS = 0;
