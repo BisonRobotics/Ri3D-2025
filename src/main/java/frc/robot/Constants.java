@@ -28,11 +28,11 @@ public class Constants
         public static final int limitSwitchPort = 0; // TODO: Set this value
         // PID Constants TODO: tune
         public static final double WRIST_PID_TOLERANCE = 0.1;
-        public static final double WRIST_kP = 0;
+        public static final double WRIST_kP = 0; // TODO: Tune
         public static final double WRIST_kI = 0;
         public static final double WRIST_kD = 0;
         public static final double WRIST_kS = 0;
-        public static final double WRIST_kG = 0;
+        public static final double WRIST_kG = 0; // TODO: Tune
         public static final double WRIST_kV = 0;
 
         // Limits
@@ -56,11 +56,11 @@ public class Constants
         public static final int followerPort = 1; // TODO: Change
         public static final int limitSwitchPort = 0; // TODO: Change
         public static final double PID_TOLERANCE = 0.1;
-        public static final double kP =0.0;
+        public static final double kP =0.0; // TODO: Tune
         public static final double kI = 0;
         public static final double kD = 0;
         public static final double kS = 0;
-        public static final double kG = 0;
+        public static final double kG = 0; //TODO: Tune
         public static final double kV = 0;
 
         public static final double ELEVATOR_HEIGHT =1.1684; // in meters

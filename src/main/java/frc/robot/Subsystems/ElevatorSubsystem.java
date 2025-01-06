@@ -11,6 +11,7 @@ import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class ElevatorSubsystem extends SubsystemBase
 {
@@ -21,6 +22,10 @@ public class ElevatorSubsystem extends SubsystemBase
     private DigitalInput m_limitSwitch;
     
     private boolean inTolerance = false;
+
+    public double kP_tune = 0.0;
+    public double PID_Tolerance_tune = 0.1;
+    public double e_speed_limit = 0.1;
 
     public ElevatorSubsystem()
     {
@@ -34,15 +39,41 @@ public class ElevatorSubsystem extends SubsystemBase
         followerConfig.idleMode(SparkMaxConfig.IdleMode.kBrake);
         followerConfig.follow(m_leader, true);
         m_follower.configure(followerConfig, ResetMode.kNoResetSafeParameters, PersistMode.kNoPersistParameters);
-        pidController = new PIDController(Constants.ElevatorConstants.kP, Constants.ElevatorConstants.kI, Constants.ElevatorConstants.kD);
-        pidController.setTolerance(Constants.ElevatorConstants.PID_TOLERANCE);
+
+        //for tuning
+        pidController = new PIDController(kP_tune, Constants.ElevatorConstants.kI, Constants.ElevatorConstants.kD);
+        pidController.setTolerance(PID_Tolerance_tune);
+        SmartDashboard.putNumber("Elevator kP", kP_tune);
+        SmartDashboard.putNumber("Elevator PID Tolerance", PID_Tolerance_tune);
+
+        //put back in after tuning
+        //pidController = new PIDController(Constants.ElevatorConstants.kP, Constants.ElevatorConstants.kI, Constants.ElevatorConstants.kD);
+        //pidController.setTolerance(Constants.ElevatorConstants.PID_TOLERANCE);
+
         feedforward = new ArmFeedforward(Constants.ElevatorConstants.kS, Constants.ElevatorConstants.kG, Constants.ElevatorConstants.kV);
 
         m_limitSwitch = new DigitalInput(Constants.ElevatorConstants.limitSwitchPort);
+        SmartDashboard.putNumber("Elevator Speed Limit (not for position control)", e_speed_limit);
+        SmartDashboard.putNumber("Elevator pidOutput", 9999);
+        SmartDashboard.putNumber("Elevator feedforward", 9999);
+        SmartDashboard.putNumber("Elevator speed", 9999);
+        SmartDashboard.putNumber("Elevator postion (from encoder)", m_leader.getEncoder().getPosition());
+        SmartDashboard.putNumber("Elevator motorPositionToMeters", motorPostionToMeters(m_leader.getEncoder().getPosition()));
+    }
+
+    public void periodic() {
+        kP_tune = SmartDashboard.getNumber("Elevator kP", kP_tune);
+        pidController.setP(kP_tune);
+        PID_Tolerance_tune = SmartDashboard.getNumber("Elevator PID Tolerance", PID_Tolerance_tune);
+        pidController.setTolerance(PID_Tolerance_tune);
     }
 
     public void moveElevator(double speed)
     {
+        e_speed_limit = SmartDashboard.getNumber("Elevator Speed Limit (not for position control)", e_speed_limit);
+        if (speed > e_speed_limit){
+            speed = e_speed_limit;
+        }
         m_leader.set(speed);
     }
 
@@ -56,6 +87,12 @@ public class ElevatorSubsystem extends SubsystemBase
             motorPostionToMeters(m_leader.getEncoder().getPosition()),
             motorPostionToMeters(m_leader.getEncoder().getVelocity()));
         double speed = pidOutput + feedforwardOutput;
+
+        SmartDashboard.putNumber("Elevator pidOutput", pidOutput);
+        SmartDashboard.putNumber("Elevator feedforward", feedforwardOutput);
+        SmartDashboard.putNumber("Elevator speed", speed);
+        SmartDashboard.putNumber("Elevator postion (from encoder)", m_leader.getEncoder().getPosition());
+        SmartDashboard.putNumber("Elevator motorPositionToMeters", motorPostionToMeters(m_leader.getEncoder().getPosition()));
 
         //ensure @pram speed is within -1 to 1
         speed = ( speed > 1) ? 1 :speed;
