@@ -17,8 +17,8 @@ public class WristSubsystem extends SubsystemBase{
     private SparkMax wristMotor;
     private SparkBaseConfig wristMotorConfig;
     private PIDController wristPidController;
-    // private ArmFeedforward wristFeedForward;
-    // private DigitalInput m_limitSwitch;
+    private ArmFeedforward wristFeedForward;
+    private DigitalInput m_limitSwitch;
     
     private boolean inTolerance = false;
     public double w_kP_tune = 0.0;
