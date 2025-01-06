@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import frc.robot.Constants;
 import frc.robot.Subsystems.ElevatorSubsystem;
+import frc.robot.Subsystems.ManipulatorSubsystem;
 import frc.robot.Subsystems.WristSubsystem;
 
 public class MindControlCommand extends Command
@@ -15,18 +16,24 @@ public class MindControlCommand extends Command
     private DoubleSupplier m_pov;
     private ElevatorSubsystem m_elevator;
     private WristSubsystem m_wrist;
+    private ManipulatorSubsystem m_manipulator;
+    private BooleanSupplier m_button1pressed;
+    private BooleanSupplier m_button2pressed;
     private BooleanSupplier m_button3pressed;
     private BooleanSupplier m_button4pressed;
     private BooleanSupplier m_button10pressed;
 
-    public MindControlCommand(DoubleSupplier pov, BooleanSupplier button3pressed, BooleanSupplier button4pressed, BooleanSupplier button10pressed, ElevatorSubsystem elevator, WristSubsystem wrist)
+    
+    public MindControlCommand(DoubleSupplier pov, BooleanSupplier button1pressed, BooleanSupplier button2pressed, BooleanSupplier button3pressed, BooleanSupplier button4pressed, BooleanSupplier button10pressed, ElevatorSubsystem elevator, WristSubsystem wrist, ManipulatorSubsystem manipulatorSubsystem)
     {
         m_pov = pov;
         m_elevator = elevator;
         m_wrist = wrist;
+        m_button1pressed = button1pressed;
+        m_button2pressed = button2pressed;
         m_button3pressed = button3pressed;
         m_button4pressed = button4pressed;
-        m_manipulatorSubsystem = manipulatorSubsystem;
+        m_manipulator = manipulatorSubsystem;
         m_button10pressed = button10pressed;
     }
 
@@ -68,11 +75,11 @@ public class MindControlCommand extends Command
             
             if (m_button1pressed.getAsBoolean()) // trigger
             {
-                new ManipulatorCommand(m_manipulatorSubsystem, false).wait();
+                new ManipulatorCommand(m_manipulator, false).wait();
             }
             else if (m_button2pressed.getAsBoolean()) // thumb button
             {
-                new ManipulatorCommand(m_manipulatorSubsystem, true).wait();
+                new ManipulatorCommand(m_manipulator, true).wait();
             }
             
             if (m_button10pressed.getAsBoolean())

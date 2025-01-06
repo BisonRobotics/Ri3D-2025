@@ -25,14 +25,30 @@ public class RobotContainer
 		m_drivetrain.setDefaultCommand(
 			new driveArcade(() -> m_controller.getY(), () -> m_controller.getX(), m_drivetrain));
 
-		//  m_elevator.setDefaultCommand(
-		// 	new ElevatorMindCommand(() -> m_controller.getPOV(), () -> m_controller.getRawButtonPressed(3), () -> m_controller.getRawButton(4), m_elevator, m_wrist));
+		/* 
+		m_elevator.setDefaultCommand(
+			new MindControlCommand(
+				() -> m_controller.getPOV(),
+				() -> m_controller.getRawButtonPressed(1),
+				() -> m_controller.getRawButtonPressed(2),
+				() -> m_controller.getRawButtonPressed(3),
+				() -> m_controller.getRawButtonPressed(4),
+				() -> m_controller.getRawButtonPressed(10),
+				m_elevator,
+				m_wrist,
+				m_manipulatorSubsystem)
+		);
+		*/
 
 		m_elevator.setDefaultCommand(
-			new moveElevatorCommand(() -> m_testcontroller.getY(), m_elevator));
+			new moveElevatorCommand(
+				() -> m_testcontroller.getY(),
+				m_elevator));
 
 		m_wrist.setDefaultCommand(
-			new moveWristCommand(() -> m_testcontroller.getX(), m_wrist));
+			new moveWristCommand(
+				() -> m_testcontroller.getX(),
+				m_wrist));
 	}
 
 	public Command getAutonomousCommand() 
