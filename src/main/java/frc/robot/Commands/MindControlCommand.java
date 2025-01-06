@@ -8,7 +8,7 @@ import frc.robot.Constants;
 import frc.robot.Subsystems.ElevatorSubsystem;
 import frc.robot.Subsystems.WristSubsystem;
 
-public class ElevatorMindCommand extends Command
+public class MindControlCommand extends Command
 {
     private DoubleSupplier m_pov;
     private ElevatorSubsystem m_elevator;
@@ -16,7 +16,7 @@ public class ElevatorMindCommand extends Command
     private BooleanSupplier m_button3pressed;
     private BooleanSupplier m_button4pressed;
 
-    public ElevatorMindCommand(DoubleSupplier pov, BooleanSupplier button3pressed, BooleanSupplier button4pressed, ElevatorSubsystem elevator, WristSubsystem wrist)
+    public MindControlCommand(DoubleSupplier pov, BooleanSupplier button3pressed, BooleanSupplier button4pressed, ElevatorSubsystem elevator, WristSubsystem wrist)
     {
         m_pov = pov;
         m_elevator = elevator;

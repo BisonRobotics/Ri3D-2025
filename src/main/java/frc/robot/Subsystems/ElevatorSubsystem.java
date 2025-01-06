@@ -77,6 +77,11 @@ public class ElevatorSubsystem extends SubsystemBase
         m_leader.set(speed);
     }
 
+    public double getPosition()
+    {
+        return m_leader.getEncoder().getPosition();
+    }
+    
     public void setPostion(double positionMeters)
     {
         inTolerance = pidController.atSetpoint();

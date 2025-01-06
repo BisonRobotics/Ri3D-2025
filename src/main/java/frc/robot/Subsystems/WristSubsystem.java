@@ -101,6 +101,11 @@ public class WristSubsystem extends SubsystemBase{
         wristMotor.set(speed);
     }
 
+    public double getPosition()
+    {
+        return wristMotor.getEncoder().getPosition();
+    }
+
     public boolean getInTolerance()
     {
         return inTolerance;

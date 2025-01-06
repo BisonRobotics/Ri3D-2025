@@ -2,6 +2,7 @@ package frc.robot.Commands;
 
 import java.util.function.DoubleSupplier;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
 import frc.robot.Subsystems.ElevatorSubsystem;
@@ -21,6 +22,7 @@ public class moveElevatorCommand extends Command
     @Override
     public void execute()
     {
+        SmartDashboard.putNumber("Elevator Position", elevatorSubsystem.getPosition());
         elevatorSubsystem.setPostion(m_speed.getAsDouble() * Constants.ElevatorConstants.ELEVATOR_SPEED_MODIFIER);
     }
 }
