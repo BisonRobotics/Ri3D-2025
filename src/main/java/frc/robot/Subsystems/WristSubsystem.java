@@ -22,7 +22,7 @@ public class WristSubsystem extends SubsystemBase {
     private DigitalInput m_limitSwitch;
 
     private boolean inTolerance = false;
-    public double w_kP_tune = 0.01;
+    public double w_kP_tune = Constants.WristConstants.WRIST_kP;
     public double w_PID_Tolerance_tune= 0.1;
 
     public WristSubsystem() {
@@ -132,18 +132,20 @@ public class WristSubsystem extends SubsystemBase {
 
     public void setWristSpeed(double speed) {
         SmartDashboard.putNumber("Wrist Encoder Position", wristMotor.getEncoder().getPosition());
-
-        if (m_limitSwitch.get()) {
+        SmartDashboard.putNumber("Wrist Speed", speed);
+        
+        if (m_limitSwitch.get()) 
+        {
             zeroWrist();
         }
 
-        if (wristMotor.getEncoder().getPosition() >= Constants.WristConstants.WRIST_LIMIT_BOTTOM) {
+        /*if (wristMotor.getEncoder().getPosition() >= Constants.WristConstants.WRIST_LIMIT_BOTTOM) {
             speed = Math.min(speed, 0);
         }
 
         if (wristMotor.getEncoder().getPosition() <= Constants.WristConstants.WRIST_LIMIT_TOP) {
             speed = Math.max(speed, 0);
-        }
+        }*/
 
         // if ((m_limitSwitch.get() && speed > 0)
         //         || wristMotor.getEncoder().getPosition() > Constants.WristConstants.WRIST_LIMIT_BOTTOM) {

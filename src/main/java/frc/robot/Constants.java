@@ -29,11 +29,11 @@ public class Constants
         public static final int limitSwitchPort = 1;
         // PID Constants TODO: tune
         public static final double WRIST_PID_TOLERANCE = 0.1;
-        public static final double WRIST_kP = 0; // TODO: Tune
+        public static final double WRIST_kP = 0.021;
         public static final double WRIST_kI = 0;
         public static final double WRIST_kD = 0;
         public static final double WRIST_kS = 0;
-        public static final double WRIST_kG = 0.05;
+        public static final double WRIST_kG = 0.0377;
         public static final double WRIST_kV = 0;
 
         public static final double WRIST_SPEED_MODIFIER = 0.1; // 10%
