@@ -24,7 +24,7 @@ public class RobotContainer
 	private void configureBindings() 
 	{
 		m_drivetrain.setDefaultCommand(
-			new driveArcade(() -> m_controller.getY(), () -> m_controller.getX(), m_drivetrain));
+			new driveArcade(() -> m_controller.getY(), () -> m_controller.getTwist() / 2, m_drivetrain));
 		
 		// for manual testing
 		// m_elevator.setDefaultCommand(new moveElevatorCommand(() -> m_testcontroller.getY(), m_elevator));

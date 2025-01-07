@@ -30,7 +30,7 @@ public class Constants
 
         // PID values
         public static final double WRIST_PID_TOLERANCE = 0.1;
-        public static final double WRIST_kP = 0.021 * 1.5;
+        public static final double WRIST_kP = 0.021;
         public static final double WRIST_kI = 0;
         public static final double WRIST_kD = 0;
 
