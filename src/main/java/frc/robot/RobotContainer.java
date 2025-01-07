@@ -26,7 +26,7 @@ public class RobotContainer
 		m_drivetrain.setDefaultCommand(
 			new driveArcade(() -> m_controller.getY(), () -> m_controller.getX(), m_drivetrain));
 		
-		m_elevator.setDefaultCommand(new moveElevatorCommand(() -> m_testcontroller.getY(), m_elevator));
+		//vm_elevator.setDefaultCommand(new moveElevatorCommand(() -> m_testcontroller.getY(), m_elevator));
 
 		m_wrist.setDefaultCommand(new moveWristCommand(() -> m_testcontroller.getX(), m_wrist));
 

@@ -27,7 +27,6 @@ public class ElevatorToCommand extends Command
     @Override
     public void initialize()
     {
-        DriverStation.reportWarning("ELEVATOR CALLED", false);
         elevatorSubsystem.setPostion(elevatorHeight);
         wristSubsystem.setPosition(wristAngle);
     }
