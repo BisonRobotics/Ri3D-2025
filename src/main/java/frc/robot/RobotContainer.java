@@ -2,6 +2,7 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import frc.robot.Commands.*;
 import frc.robot.Subsystems.*;
@@ -25,30 +26,32 @@ public class RobotContainer
 		m_drivetrain.setDefaultCommand(
 			new driveArcade(() -> m_controller.getY(), () -> m_controller.getX(), m_drivetrain));
 		
-		// m_elevator.setDefaultCommand(new moveElevatorCommand(() -> m_controller.getY(), m_elevator));
+		// for manual testing
+		// m_elevator.setDefaultCommand(new moveElevatorCommand(() -> m_testcontroller.getY(), m_elevator));
 
-		//m_wrist.setDefaultCommand(new moveWristCommand(() -> m_controller.getX(), m_wrist));
+		// m_wrist.setDefaultCommand(new moveWristCommand(() -> m_testcontroller.getX(), m_wrist));
 
 		m_wrist.setDefaultCommand(new DefaultWristCommand(m_wrist));
 
-		m_controller.povUp().whileTrue(new ElevatorToCommand(m_elevator, m_wrist, Constants.ElevatorConstants.L3, Constants.WristConstants.L3));
+		m_controller.button(5).whileTrue(new ElevatorToCommand(m_elevator, m_wrist, Constants.ElevatorConstants.L3, Constants.WristConstants.L3));
 
-		m_controller.povLeft().whileTrue(new ElevatorToCommand(m_elevator, m_wrist, Constants.ElevatorConstants.L2, Constants.WristConstants.L2));
+		m_controller.button(6).whileTrue(new ElevatorToCommand(m_elevator, m_wrist, Constants.ElevatorConstants.L2, Constants.WristConstants.L2));
 
-		m_controller.povDown().onTrue(new ElevatorToCommand(m_elevator, m_wrist, Constants.ElevatorConstants.PLACE_ALGAE, Constants.WristConstants.PLACE_ALGAE));
+		m_controller.button(10).whileTrue(new ElevatorToCommand(m_elevator, m_wrist, Constants.ElevatorConstants.PLACE_ALGAE, Constants.WristConstants.PLACE_ALGAE));
 
-		m_controller.povRight().onTrue(new ElevatorToCommand(m_elevator, m_wrist, Constants.ElevatorConstants.HUMAN_PICKUP, Constants.WristConstants.HUMAN_PICKUP));
+		m_controller.button(7).whileTrue(new ElevatorToCommand(m_elevator, m_wrist, Constants.ElevatorConstants.HUMAN_PICKUP, Constants.WristConstants.HUMAN_PICKUP));
 
 		m_controller.button(3).whileTrue(new ElevatorToCommand(m_elevator, m_wrist, Constants.ElevatorConstants.PICKUP_ALGAE_L1, Constants.WristConstants.PICKUP_ALGAE_L1));
 
 		m_controller.button(4).whileTrue(new ElevatorToCommand(m_elevator, m_wrist, Constants.ElevatorConstants.PICKUP_ALGAE_L2, Constants.WristConstants.PICKUP_ALGAE_L2));
 
-		m_controller.button(1).whileTrue(new ManipulatorCommand(m_manipulator, false));
+		// coral shoot, algae intake
+		m_controller.button(1).whileTrue(new ManipulatorCommand(m_manipulator, false)).toggleOnFalse(new HoldCommand(m_manipulator, false, false));
 
-		m_controller.button(2).whileTrue(new ManipulatorCommand(m_manipulator, true));
+		// algae intake, coral shoot
+		m_controller.button(2).whileTrue(new ManipulatorCommand(m_manipulator, true)).toggleOnFalse(new HoldCommand(m_manipulator, false, true));
 
-		//toggle hold, when toggled, user must not be using intake or outtake, and when toggled on, user cannot control manipulator
-		m_controller.button(10).toggleOnTrue(new HoldCommand(m_manipulator));
+		m_controller.povUp().onTrue(new StopCommand(m_manipulator));
 
 	}
 

@@ -51,10 +51,10 @@ public class Constants
         public static final double L3 = -7;
         public static final double L2 = -7;
         public static final double L1 = 0;
-        public static final double HUMAN_PICKUP = 0.0; // TODO: Change
+        public static final double HUMAN_PICKUP = 0.0;
         public static final double PLACE_ALGAE = 0.0; // TODO: Change
-        public static final double PICKUP_ALGAE_L1 = -5.23; // TODO: Change
-        public static final double PICKUP_ALGAE_L2 = -5.23; // TODO: Change
+        public static final double PICKUP_ALGAE_L1 = -5.23;
+        public static final double PICKUP_ALGAE_L2 = -5.23;
     }
 
     public static final class ElevatorConstants
@@ -83,7 +83,7 @@ public class Constants
         public static final double L3 = -64.3;
         public static final double L2 = -37.59;
         public static final double L1 = -4.71;
-        public static final double HUMAN_PICKUP = 0.0; // TODO: Change
+        public static final double HUMAN_PICKUP = -32.85;
         public static final double PLACE_ALGAE = 0.0; // TODO: Change
         public static final double PICKUP_ALGAE_L1 = -24.14;
         public static final double PICKUP_ALGAE_L2 = -49.523;

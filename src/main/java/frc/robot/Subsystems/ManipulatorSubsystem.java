@@ -51,9 +51,14 @@ public class ManipulatorSubsystem extends SubsystemBase{
         m_topMotor.set(INTAKE_SPEED);
     }
     
-    // hold gamepiece
-    public void hold() {
+    // hold algae, shoot coral
+    public void holdAlgae() {
         m_topMotor.set(HOLD_SPEED);
+    }
+    
+    // hold coral, shoot algae
+    public void holdCoral() {
+        m_topMotor.set(-HOLD_SPEED);
     }
 
     // intake pvc pipe, shoot out ball
