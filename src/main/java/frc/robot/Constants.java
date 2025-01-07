@@ -33,7 +33,7 @@ public class Constants
         public static final double WRIST_kI = 0;
         public static final double WRIST_kD = 0;
         public static final double WRIST_kS = 0;
-        public static final double WRIST_kG = 0; // TODO: Tune
+        public static final double WRIST_kG = 0.05;
         public static final double WRIST_kV = 0;
 
         public static final double WRIST_SPEED_MODIFIER = 0.1; // 10%
@@ -43,7 +43,7 @@ public class Constants
         public static final double WRIST_LIMIT_BOTTOM = 0;
     
         // LEVEL CONSTANTS (radians)
-        public static final double WRIST_PARK_ANGLE = 0; //where the wrist should go when idle
+        public static final double WRIST_PARK_ANGLE = 0;
         public static final double L3 = 0.0; // TODO: Change
         public static final double L2 = 0.0; // TODO: Change
         public static final double HUMAN_PICKUP = 0.0; // TODO: Change
