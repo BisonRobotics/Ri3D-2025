@@ -79,7 +79,7 @@ public class ElevatorSubsystem extends SubsystemBase
         // TODO: Implement height limit
         SmartDashboard.putNumber("Elevator Position (from encoder)", m_leader.getEncoder().getPosition());
 
-        if ((m_limitSwitch.get() && speed > 0) || m_leader.getEncoder().getPosition() > Constants.ElevatorConstants.MOTOR_TOP || m_leader.getEncoder().getPosition() < Constants.ElevatorConstants.MOTOR_BOTTOM)
+        if ((m_limitSwitch.get() && speed > 0) || m_leader.getEncoder().getPosition() < Constants.ElevatorConstants.MOTOR_TOP || m_leader.getEncoder().getPosition() > Constants.ElevatorConstants.MOTOR_BOTTOM)
         {
             speed = 0;
             zeroElevator();
