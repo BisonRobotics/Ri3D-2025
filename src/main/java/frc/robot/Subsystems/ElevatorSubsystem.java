@@ -103,6 +103,7 @@ public class ElevatorSubsystem extends SubsystemBase
         return m_leader.getEncoder();
     }
     
+    // do NOT setPosition outside of limit
     public void setPostion(double goalPosition)
     {
         inTolerance = pidController.atSetpoint();

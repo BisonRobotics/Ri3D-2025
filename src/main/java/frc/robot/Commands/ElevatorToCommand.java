@@ -27,15 +27,15 @@ public class ElevatorToCommand extends Command
     @Override
     public void initialize()
     {
-        elevatorSubsystem.setPostion(elevatorHeight);
         wristSubsystem.setPosition(wristAngle);
+        elevatorSubsystem.setPostion(elevatorHeight);
     }
 
     @Override
     public void execute()
     {
-        elevatorSubsystem.setPostion(elevatorHeight);
         wristSubsystem.setPosition(wristAngle);
+        elevatorSubsystem.setPostion(elevatorHeight);
     }
 
     @Override
