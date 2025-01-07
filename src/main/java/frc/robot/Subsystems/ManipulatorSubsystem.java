@@ -46,23 +46,17 @@ public class ManipulatorSubsystem extends SubsystemBase{
         bottomMotor.configure(bottomMotorConfig, ResetMode.kResetSafeParameters, PersistMode.kNoPersistParameters);
     }
 
-    // intake gamepiece
+    // intake ball, spit out pvc pipe
     public void intake() {
         topMotor.set(INTAKE_SPEED);
     }
-
-    // apply a tiny bit of negative power to hold the gamepiece in place. 
-    // ** Might not be needed. **
+    
+    // hold gamepiece
     public void hold() {
         topMotor.set(HOLD_SPEED);
     }
 
-    // spit out gamepiece
-    public void drop() {
-        topMotor.set(-INTAKE_SPEED);
-    }
-
-    // place coral on pipe or spit out ball
+    // intake pvc pipe, shoot out ball
     public void placeGamepiece() {
         topMotor.set(PLACE_SPEED);
     }

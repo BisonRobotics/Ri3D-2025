@@ -25,24 +25,28 @@ public class Constants
 
     public static final class WristConstants 
     {
-        public static final int WRIST_MOTOR_ID = 10; // TODO: !!!!! needs value !!!!!
+        public static final int WRIST_MOTOR_ID = 10;
         public static final int limitSwitchPort = 1;
-        // PID Constants TODO: tune
+
+        // PID values
         public static final double WRIST_PID_TOLERANCE = 0.1;
         public static final double WRIST_kP = 0.021;
         public static final double WRIST_kI = 0;
         public static final double WRIST_kD = 0;
+
+        // Feed forward values
         public static final double WRIST_kS = 0;
         public static final double WRIST_kG = 0.0377;
         public static final double WRIST_kV = 0;
 
+        // Speed modifier
         public static final double WRIST_SPEED_MODIFIER = 0.1; // 10%
         
         // Limits
-        public static final double WRIST_LIMIT_TOP = -14;
-        public static final double WRIST_LIMIT_BOTTOM = 0;
+        public static final double WRIST_LIMIT_TOP = -14; // most forward pose
+        public static final double WRIST_LIMIT_BOTTOM = 0; // most backward pose
     
-        // LEVEL CONSTANTS (radians)
+        // LEVEL CONSTANTS (rotations)
         public static final double WRIST_PARK_ANGLE = 0;
         public static final double L3 = -7;
         public static final double L2 = -7;
@@ -58,19 +62,21 @@ public class Constants
         public static final int leaderPort = 11;
         public static final int followerPort = 6;
         public static final int limitSwitchPort = 0;
+
+        // PID values
         public static final double PID_TOLERANCE = 0.1;
-        public static final double kP = 0.0; // TODO: Tune
+        public static final double kP = 0.5;
         public static final double kI = 0;
         public static final double kD = 0;
+
+        // Feed forward values
         public static final double kS = 0;
-        public static final double kG = 0; //TODO: Tune
+        public static final double kG = 0; // Feed forward was unneeded, brake mode is enough.
         public static final double kV = 0;
 
-        public static final double ELEVATOR_SPEED_MODIFIER = 0.25; // 25%
-        public static final double ELEVATOR_HEIGHT = 1.1684; // in meters
+        public static final double ELEVATOR_SPEED_MODIFIER = 0.25; // 25% speed
         public static final double MOTOR_BOTTOM = 0;
         public static final double MOTOR_TOP = -70;
-        public static final double MOTOR_ENCODER_POSITION_COEFFICENT = ELEVATOR_HEIGHT / (Math.abs(MOTOR_TOP) - Math.abs(MOTOR_BOTTOM));
     
         // LEVEL CONSTANTS (in meters)
         public static final double ELEVATOR_PARK_HEIGHT = 0.1; //where the elevator goes when idle

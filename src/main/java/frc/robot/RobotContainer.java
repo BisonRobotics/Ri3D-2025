@@ -51,6 +51,10 @@ public class RobotContainer
 		m_controller.button(2).whileTrue(new ManipulatorCommand(m_manipulator, true));
 
 		// m_controller.button(10).onTrue(new ParallelCommandGroup(new DefaultElevatorCommand(m_elevator), new DefaultWristCommand(m_wrist)));
+
+		//toggle hold, when toggled, user must not be using intake or outtake, and when toggled on, user cannot control manipulator
+		m_controller.button(10).toggleOnTrue(new HoldCommand(m_manipulator));
+
 	}
 
 	public Command getAutonomousCommand() 

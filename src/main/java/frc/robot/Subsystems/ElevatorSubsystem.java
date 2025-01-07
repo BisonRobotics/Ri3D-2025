@@ -77,7 +77,6 @@ public class ElevatorSubsystem extends SubsystemBase
 
     public void moveElevator(double speed)
     {
-        // TODO: Implement height limit
         SmartDashboard.putNumber("Elevator Position (from encoder)", m_leader.getEncoder().getPosition());
 
         if ((m_limitSwitch.get() && speed > 0) || m_leader.getEncoder().getPosition() < Constants.ElevatorConstants.MOTOR_TOP || m_leader.getEncoder().getPosition() > Constants.ElevatorConstants.MOTOR_BOTTOM)
@@ -124,7 +123,6 @@ public class ElevatorSubsystem extends SubsystemBase
         speed = ( speed > 1) ? 1 :speed;
         speed = ( speed < -1) ? -1 : speed;
 
-        // TODO: Test if positive speed is up the elevator and adjust if statement
         if (m_limitSwitch.get() && speed > 0)
         {
             speed = 0;
