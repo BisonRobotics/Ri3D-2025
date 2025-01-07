@@ -24,7 +24,7 @@ public class ElevatorSubsystem extends SubsystemBase
     
     private boolean inTolerance = false;
 
-    public double kP_tune = 0.0;
+    public double kP_tune = 0.5;
     public double PID_Tolerance_tune = 0.1;
     public double e_speed_limit = 0.1;
 
@@ -38,7 +38,9 @@ public class ElevatorSubsystem extends SubsystemBase
 
         SparkMaxConfig followerConfig = new SparkMaxConfig();
         followerConfig.idleMode(SparkMaxConfig.IdleMode.kBrake);
+
         followerConfig.follow(m_leader, true);
+        
         m_follower.configure(followerConfig, ResetMode.kNoResetSafeParameters, PersistMode.kNoPersistParameters);
 
         //for tuning
@@ -62,11 +64,12 @@ public class ElevatorSubsystem extends SubsystemBase
         SmartDashboard.putNumber("Elevator postion (from encoder)", Math.abs(m_leader.getEncoder().getPosition()));
     }
 
-    public void periodic() {
-        kP_tune = SmartDashboard.getNumber("Elevator kP", kP_tune);
-        pidController.setP(kP_tune);
-        PID_Tolerance_tune = SmartDashboard.getNumber("Elevator PID Tolerance", PID_Tolerance_tune);
-        pidController.setTolerance(PID_Tolerance_tune);
+    public void periodic()
+     {
+        // kP_tune = SmartDashboard.getNumber("Elevator kP", kP_tune);
+        // pidController.setP(kP_tune);
+        // PID_Tolerance_tune = SmartDashboard.getNumber("Elevator PID Tolerance", PID_Tolerance_tune);
+        // pidController.setTolerance(PID_Tolerance_tune);
     }
 
     public void moveElevator(double speed)
@@ -74,9 +77,7 @@ public class ElevatorSubsystem extends SubsystemBase
         // TODO: Implement height limit
         SmartDashboard.putNumber("Elevator Position (from encoder)", Math.abs(m_leader.getEncoder().getPosition()));
 
-        if ((m_limitSwitch.get() && speed > 0) ||
-            Math.abs(m_leader.getEncoder().getPosition()) + speed > Constants.ElevatorConstants.MOTOR_TOP ||
-            Math.abs(m_leader.getEncoder().getPosition()) + speed < Constants.ElevatorConstants.MOTOR_BOTTOM)
+        if ((m_limitSwitch.get() && speed > 0) || Math.abs(m_leader.getEncoder().getPosition()) > Constants.ElevatorConstants.MOTOR_TOP || Math.abs(m_leader.getEncoder().getPosition()) < Constants.ElevatorConstants.MOTOR_BOTTOM)
         {
             speed = 0;
             zeroElevator();

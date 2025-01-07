@@ -54,7 +54,7 @@ public class Constants
 
     public static final class ElevatorConstants
     {
-        public static final int leaderPort = 11; // TODO: Change
+        public static final int leaderPort = 11;
         public static final int followerPort = 6;
         public static final int limitSwitchPort = 0;
         public static final double PID_TOLERANCE = 0.1;
