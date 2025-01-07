@@ -59,8 +59,7 @@ public class ElevatorSubsystem extends SubsystemBase
         SmartDashboard.putNumber("Elevator pidOutput", 9999);
         SmartDashboard.putNumber("Elevator feedforward", 9999);
         SmartDashboard.putNumber("Elevator speed", 9999);
-        SmartDashboard.putNumber("Elevator postion (from encoder)", m_leader.getEncoder().getPosition());
-        SmartDashboard.putNumber("Elevator motorPositionToMeters", motorPostionToMeters(m_leader.getEncoder().getPosition()));
+        SmartDashboard.putNumber("Elevator postion (from encoder)", Math.abs(m_leader.getEncoder().getPosition()));
     }
 
     public void periodic() {
@@ -73,11 +72,11 @@ public class ElevatorSubsystem extends SubsystemBase
     public void moveElevator(double speed)
     {
         // TODO: Implement height limit
-        SmartDashboard.putNumber("Elevator Position (from encoder)", m_leader.getEncoder().getPosition());
+        SmartDashboard.putNumber("Elevator Position (from encoder)", Math.abs(m_leader.getEncoder().getPosition()));
 
         if ((m_limitSwitch.get() && speed > 0) ||
-            m_leader.getEncoder().getPosition() + speed > Constants.ElevatorConstants.MOTOR_TOP ||
-            m_leader.getEncoder().getPosition() + speed < Constants.ElevatorConstants.MOTOR_BOTTOM)
+            Math.abs(m_leader.getEncoder().getPosition()) + speed > Constants.ElevatorConstants.MOTOR_TOP ||
+            Math.abs(m_leader.getEncoder().getPosition()) + speed < Constants.ElevatorConstants.MOTOR_BOTTOM)
         {
             speed = 0;
             zeroElevator();
@@ -88,7 +87,7 @@ public class ElevatorSubsystem extends SubsystemBase
 
     public double getPosition()
     {
-        return m_leader.getEncoder().getPosition();
+        return Math.abs(m_leader.getEncoder().getPosition());
     }
     
     public RelativeEncoder getEncoder()
@@ -96,23 +95,21 @@ public class ElevatorSubsystem extends SubsystemBase
         return m_leader.getEncoder();
     }
     
-    public void setPostion(double positionMeters)
+    public void setPostion(double goalPosition)
     {
-        // TODO: Implement height limit
         inTolerance = pidController.atSetpoint();
 
-        pidController.setSetpoint(positionMeters);
-        double pidOutput = pidController.calculate(motorPostionToMeters(m_leader.getEncoder().getPosition()),positionMeters);
-        double feedforwardOutput = feedforward.calculate(
-            motorPostionToMeters(m_leader.getEncoder().getPosition()),
-            motorPostionToMeters(m_leader.getEncoder().getVelocity()));
+        pidController.setSetpoint(goalPosition);
+        double pidOutput = pidController.calculate(Math.abs(m_leader.getEncoder().getPosition()), goalPosition);
+
+        double feedforwardOutput = feedforward.calculate(Math.abs(m_leader.getEncoder().getPosition()), Math.abs(m_leader.getEncoder().getVelocity()));
+
         double speed = pidOutput + feedforwardOutput;
 
         SmartDashboard.putNumber("Elevator pidOutput", pidOutput);
         SmartDashboard.putNumber("Elevator feedforward", feedforwardOutput);
         SmartDashboard.putNumber("Elevator speed", speed);
-        SmartDashboard.putNumber("Elevator postion (from encoder)", m_leader.getEncoder().getPosition());
-        SmartDashboard.putNumber("Elevator motorPositionToMeters", motorPostionToMeters(m_leader.getEncoder().getPosition()));
+        SmartDashboard.putNumber("Elevator postion (from encoder)", Math.abs(m_leader.getEncoder().getPosition()));
 
         //ensure @pram speed is within -1 to 1
         speed = ( speed > 1) ? 1 :speed;
@@ -129,13 +126,9 @@ public class ElevatorSubsystem extends SubsystemBase
         m_leader.set(speed);
     }
 
-    public double motorPostionToMeters(double motorPosition)
-    {
-        return motorPosition * Constants.ElevatorConstants.MOTOR_ENCODER_POSITION_COEFFICENT;
-    }
     public double getElevatorPostion()
     {
-        return motorPostionToMeters(m_leader.getEncoder().getPosition());
+       return Math.abs(m_leader.getEncoder().getPosition());
     }
 
     public void stopElevator()
