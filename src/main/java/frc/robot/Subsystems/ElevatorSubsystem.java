@@ -68,10 +68,11 @@ public class ElevatorSubsystem extends SubsystemBase
 
     public void periodic()
      {
-        // kP_tune = SmartDashboard.getNumber("Elevator kP", kP_tune);
-        // pidController.setP(kP_tune);
-        // PID_Tolerance_tune = SmartDashboard.getNumber("Elevator PID Tolerance", PID_Tolerance_tune);
-        // pidController.setTolerance(PID_Tolerance_tune);
+        kP_tune = SmartDashboard.getNumber("Elevator kP", kP_tune);
+        pidController.setP(kP_tune);
+        PID_Tolerance_tune = SmartDashboard.getNumber("Elevator PID Tolerance", PID_Tolerance_tune);
+        
+        pidController.setTolerance(PID_Tolerance_tune);
     }
 
     public void moveElevator(double speed)
@@ -106,10 +107,10 @@ public class ElevatorSubsystem extends SubsystemBase
     {
         inTolerance = pidController.atSetpoint();
 
-        pidController.setSetpoint(goalPosition);
-        double pidOutput = -pidController.calculate(m_leader.getEncoder().getPosition(), goalPosition);
+        pidController.setSetpoint(-goalPosition);
+        double pidOutput = pidController.calculate(m_leader.getEncoder().getPosition(), goalPosition);
 
-        double feedforwardOutput = -feedforward.calculate(m_leader.getEncoder().getPosition(), m_leader.getEncoder().getVelocity());
+        double feedforwardOutput = feedforward.calculate(m_leader.getEncoder().getPosition(), m_leader.getEncoder().getVelocity());
 
         double speed = pidOutput + feedforwardOutput;
 
@@ -130,7 +131,7 @@ public class ElevatorSubsystem extends SubsystemBase
         }
 
         // set the motor speed
-        m_leader.set(speed);
+        m_leader.set(speed * 0.1);
     }
 
     public double getElevatorPostion()

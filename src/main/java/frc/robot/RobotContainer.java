@@ -30,7 +30,7 @@ public class RobotContainer
 
 		m_wrist.setDefaultCommand(new moveWristCommand(() -> m_testcontroller.getX(), m_wrist));
 
-		// m_controller.povUp().onTrue(new ElevatorToCommand(m_elevator, m_wrist, Constants.ElevatorConstants.L3, Constants.WristConstants.L3));
+		m_controller.povUp().whileTrue(new ElevatorToCommand(m_elevator, m_wrist, Constants.ElevatorConstants.L3, Constants.WristConstants.L3));
 
 		// m_controller.povLeft().onTrue(new ElevatorToCommand(m_elevator, m_wrist, Constants.ElevatorConstants.L2, Constants.WristConstants.L2));
 

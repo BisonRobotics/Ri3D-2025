@@ -75,8 +75,8 @@ public class WristSubsystem extends SubsystemBase{
 
         wristPidController.setSetpoint(positionRadians);
 
-        double wristRadians = (wristMotor.getEncoder().getPosition() * 2 * Math.PI) / 75; // convert to radians then compensate for 75:1 gear ratio
-        double wristVelocityRadSec = (wristMotor.getEncoder().getVelocity() * 2 * Math.PI) / 75;
+        double wristRadians = wristMotor.getEncoder().getPosition() / 75; // convert to radians then compensate for 75:1 gear ratio
+        double wristVelocityRadSec = wristMotor.getEncoder().getPosition() / 75;
 
         // calculate the pid using feed forward and set the motor to maintain position
         double pidOutput = wristPidController.calculate(wristRadians, (wristPidController.getSetpoint() * 2 * Math.PI));
