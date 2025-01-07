@@ -73,7 +73,7 @@ public class Constants
     
         // LEVEL CONSTANTS (in meters)
         public static final double ELEVATOR_PARK_HEIGHT = 0.1; //where the elevator goes when idle
-        public static final double L3 = 0.2;
+        public static final double L3 = -36;
         public static final double L2 = 0.0; // TODO: Change
         public static final double HUMAN_PICKUP = 0.0; // TODO: Change
         public static final double PLACE_ALGAE = 0.0; // TODO: Change

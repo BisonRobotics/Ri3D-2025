@@ -68,25 +68,20 @@ public class WristSubsystem extends SubsystemBase {
         wristMotor.getEncoder().setPosition(0);
     }
 
-    // hold the wrist at a current pose using pid and feed forward. i really hope i
-    // dont need to use this
-    public void setPosition(double positionRadians) {
-        // TODO: Implement limit enforcement
+    // do NOT setPosition outisde of limit
+    public void setPosition(double position) {
 
         inTolerance = wristPidController.atSetpoint();
 
-        wristPidController.setSetpoint(positionRadians);
-
-        double wristRadians = (wristMotor.getEncoder().getPosition() * 2 * Math.PI) / 75; // convert to radians then
-                                                                                          // compensate for 75:1 gear
-                                                                                          // ratio
-        double wristVelocityRadSec = (wristMotor.getEncoder().getVelocity() * 2 * Math.PI) / 75;
+        wristPidController.setSetpoint(-position);
 
         // calculate the pid using feed forward and set the motor to maintain position
-        double pidOutput = wristPidController.calculate(wristRadians, (wristPidController.getSetpoint() * 2 * Math.PI));
-        double feedForward = wristFeedForward.calculate(wristRadians, wristVelocityRadSec);
+        double pidOutput = wristPidController.calculate(wristMotor.getEncoder().getPosition(), position);
+
+        double feedForward = wristFeedForward.calculate(wristMotor.getEncoder().getPosition(), wristMotor.getEncoder().getVelocity());
 
         double speed = pidOutput + feedForward;
+
         SmartDashboard.putNumber("Wrist pidOutput", pidOutput);
         SmartDashboard.putNumber("Wrist feedforward", feedForward);
         SmartDashboard.putNumber("Wrist speed", speed);
