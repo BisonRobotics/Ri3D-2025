@@ -31,6 +31,6 @@ public class ManipulatorCommand extends Command{
     @Override
     public void end(boolean interrupted)
     {
-        manipulatorSubsystem.stop();
+        manipulatorSubsystem.hold();
     }
 }

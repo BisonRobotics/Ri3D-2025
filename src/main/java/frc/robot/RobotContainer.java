@@ -29,7 +29,7 @@ public class RobotContainer
 		m_elevator.setDefaultCommand(new moveElevatorCommand(() -> m_testcontroller.getY(), m_elevator));
 
 		m_wrist.setDefaultCommand(new moveWristCommand(() -> m_testcontroller.getX(), m_wrist));
-		
+
 		m_controller.povUp().onTrue(new ElevatorToCommand(m_elevator, m_wrist, Constants.ElevatorConstants.L3, Constants.WristConstants.L3));
 
 		m_controller.povLeft().onTrue(new ElevatorToCommand(m_elevator, m_wrist, Constants.ElevatorConstants.L2, Constants.WristConstants.L2));
@@ -42,9 +42,9 @@ public class RobotContainer
 
 		m_controller.button(4).onTrue(new ElevatorToCommand(m_elevator, m_wrist, Constants.ElevatorConstants.PICKUP_ALGAE_L2, Constants.ElevatorConstants.PICKUP_ALGAE_L2));
 
-		m_controller.button(1).onTrue(new ManipulatorCommand(m_manipulator, false));
+		m_controller.button(1).whileTrue(new ManipulatorCommand(m_manipulator, false));
 
-		m_controller.button(2).onTrue(new ManipulatorCommand(m_manipulator, true));
+		m_controller.button(2).whileTrue(new ManipulatorCommand(m_manipulator, true));
 
 		m_controller.button(10).onTrue(new ParallelCommandGroup(new DefaultElevatorCommand(m_elevator), new DefaultWristCommand(m_wrist)));
 	}

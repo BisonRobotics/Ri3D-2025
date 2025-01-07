@@ -18,9 +18,9 @@ public class Constants
         public static final int MIDDLE_MANIPULATOR_MOTOR_ID = 5;
         public static final int TOP_MANIPULATOR_MOTOR_ID = 7;
 
-        public static final double INTAKE_SPEED = 0.3;
-        public static final double HOLD_SPEED = 0.01;
-        public static final double PLACE_SPEED = 0.2;
+        public static final double INTAKE_SPEED = 0.6;
+        public static final double HOLD_SPEED = 0.2;
+        public static final double PLACE_SPEED = -0.3;
     }
 
     public static final class WristConstants 
