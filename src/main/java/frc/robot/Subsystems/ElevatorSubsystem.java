@@ -36,7 +36,7 @@ public class ElevatorSubsystem extends SubsystemBase
         SparkMaxConfig leaderConfig = new SparkMaxConfig();
         leaderConfig.idleMode(SparkMaxConfig.IdleMode.kBrake);
         leaderConfig.inverted(false); // failsafe
-        
+
         SparkMaxConfig followerConfig = new SparkMaxConfig();
         followerConfig.idleMode(SparkMaxConfig.IdleMode.kBrake);
 
@@ -63,7 +63,7 @@ public class ElevatorSubsystem extends SubsystemBase
         SmartDashboard.putNumber("Elevator pidOutput", 9999);
         SmartDashboard.putNumber("Elevator feedforward", 9999);
         SmartDashboard.putNumber("Elevator speed", 9999);
-        SmartDashboard.putNumber("Elevator postion (from encoder)", Math.abs(m_leader.getEncoder().getPosition()));
+        SmartDashboard.putNumber("Elevator postion (from encoder)", m_leader.getEncoder().getPosition());
     }
 
     public void periodic()
@@ -77,9 +77,9 @@ public class ElevatorSubsystem extends SubsystemBase
     public void moveElevator(double speed)
     {
         // TODO: Implement height limit
-        SmartDashboard.putNumber("Elevator Position (from encoder)", Math.abs(m_leader.getEncoder().getPosition()));
+        SmartDashboard.putNumber("Elevator Position (from encoder)", m_leader.getEncoder().getPosition());
 
-        if ((m_limitSwitch.get() && speed > 0) || Math.abs(m_leader.getEncoder().getPosition()) > Constants.ElevatorConstants.MOTOR_TOP || Math.abs(m_leader.getEncoder().getPosition()) < Constants.ElevatorConstants.MOTOR_BOTTOM)
+        if ((m_limitSwitch.get() && speed > 0) || m_leader.getEncoder().getPosition() > Constants.ElevatorConstants.MOTOR_TOP || m_leader.getEncoder().getPosition() < Constants.ElevatorConstants.MOTOR_BOTTOM)
         {
             speed = 0;
             zeroElevator();
@@ -90,7 +90,7 @@ public class ElevatorSubsystem extends SubsystemBase
 
     public double getPosition()
     {
-        return Math.abs(m_leader.getEncoder().getPosition());
+        return m_leader.getEncoder().getPosition();
     }
     
     public RelativeEncoder getEncoder()
@@ -103,16 +103,16 @@ public class ElevatorSubsystem extends SubsystemBase
         inTolerance = pidController.atSetpoint();
 
         pidController.setSetpoint(goalPosition);
-        double pidOutput = pidController.calculate(Math.abs(m_leader.getEncoder().getPosition()), goalPosition);
+        double pidOutput = -pidController.calculate(m_leader.getEncoder().getPosition(), goalPosition);
 
-        double feedforwardOutput = feedforward.calculate(Math.abs(m_leader.getEncoder().getPosition()), Math.abs(m_leader.getEncoder().getVelocity()));
+        double feedforwardOutput = -feedforward.calculate(m_leader.getEncoder().getPosition(), m_leader.getEncoder().getVelocity());
 
         double speed = pidOutput + feedforwardOutput;
 
         SmartDashboard.putNumber("Elevator pidOutput", pidOutput);
         SmartDashboard.putNumber("Elevator feedforward", feedforwardOutput);
         SmartDashboard.putNumber("Elevator speed", speed);
-        SmartDashboard.putNumber("Elevator postion (from encoder)", Math.abs(m_leader.getEncoder().getPosition()));
+        SmartDashboard.putNumber("Elevator postion (from encoder)", m_leader.getEncoder().getPosition());
 
         //ensure @pram speed is within -1 to 1
         speed = ( speed > 1) ? 1 :speed;
@@ -131,7 +131,7 @@ public class ElevatorSubsystem extends SubsystemBase
 
     public double getElevatorPostion()
     {
-       return Math.abs(m_leader.getEncoder().getPosition());
+       return m_leader.getEncoder().getPosition();
     }
 
     public void stopElevator()
