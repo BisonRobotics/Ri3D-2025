@@ -58,11 +58,11 @@ public class ElevatorSubsystem extends SubsystemBase
 
         m_limitSwitch = new DigitalInput(Constants.ElevatorConstants.limitSwitchPort);
         
-        SmartDashboard.putNumber("Elevator Speed Limit (not for position control)", e_speed_limit);
-        SmartDashboard.putNumber("Elevator pidOutput", 9999);
-        SmartDashboard.putNumber("Elevator feedforward", 9999);
-        SmartDashboard.putNumber("Elevator speed", 9999);
-        SmartDashboard.putNumber("Elevator postion (from encoder)", m_leader.getEncoder().getPosition());
+        // SmartDashboard.putNumber("Elevator Speed Limit (not for position control)", e_speed_limit);
+        // SmartDashboard.putNumber("Elevator pidOutput", 9999);
+        // SmartDashboard.putNumber("Elevator feedforward", 9999);
+        // SmartDashboard.putNumber("Elevator speed", 9999);
+        // SmartDashboard.putNumber("Elevator postion (from encoder)", m_leader.getEncoder().getPosition());
     }
 
     public void periodic()
@@ -77,7 +77,7 @@ public class ElevatorSubsystem extends SubsystemBase
     // manual control of the elevator
     public void moveElevator(double speed)
     {
-        SmartDashboard.putNumber("Elevator Position (from encoder)", m_leader.getEncoder().getPosition());
+        // SmartDashboard.putNumber("Elevator Position (from encoder)", m_leader.getEncoder().getPosition());
 
         if ((m_limitSwitch.get() && speed > 0) || m_leader.getEncoder().getPosition() < Constants.ElevatorConstants.MOTOR_TOP || m_leader.getEncoder().getPosition() > Constants.ElevatorConstants.MOTOR_BOTTOM)
         {
@@ -116,10 +116,10 @@ public class ElevatorSubsystem extends SubsystemBase
         double speed = pidOutput + feedforwardOutput;
 
         // put the values on the smart dashboard
-        SmartDashboard.putNumber("Elevator pidOutput", pidOutput);
-        SmartDashboard.putNumber("Elevator feedforward", feedforwardOutput);
-        SmartDashboard.putNumber("Elevator speed", speed);
-        SmartDashboard.putNumber("Elevator postion (from encoder)", m_leader.getEncoder().getPosition());
+        // SmartDashboard.putNumber("Elevator pidOutput", pidOutput);
+        // SmartDashboard.putNumber("Elevator feedforward", feedforwardOutput);
+        // SmartDashboard.putNumber("Elevator speed", speed);
+        // SmartDashboard.putNumber("Elevator postion (from encoder)", m_leader.getEncoder().getPosition());
 
         //ensure @pram speed is within -1 to 1
         speed = ( speed > 1) ? 1 :speed;

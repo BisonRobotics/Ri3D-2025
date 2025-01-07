@@ -22,6 +22,8 @@ public class moveWristCommand extends Command
     @Override
     public void execute()
     {
+        // SmartDashboard.putNumber("NEW", wristSubsystem.getPosition());
+        
         wristSubsystem.setWristSpeed(m_speed.getAsDouble() * Constants.WristConstants.WRIST_SPEED_MODIFIER);
     }
 }

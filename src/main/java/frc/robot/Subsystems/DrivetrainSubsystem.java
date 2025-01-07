@@ -48,8 +48,8 @@ public class DrivetrainSubsystem extends SubsystemBase
     @Override
     public void periodic()
     {
-        SmartDashboard.putNumber("Left Motor", m_leftMotorLeader.get());
-        SmartDashboard.putNumber("Right Motor", m_rightMotorLeader.get());
+        // SmartDashboard.putNumber("Left Motor", m_leftMotorLeader.get());
+        // SmartDashboard.putNumber("Right Motor", m_rightMotorLeader.get());
     }
 
     public void driveArcade(double left, double right)

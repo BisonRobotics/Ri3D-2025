@@ -41,9 +41,9 @@ public class WristSubsystem extends SubsystemBase {
         m_wristFeedForward = new ArmFeedforward(Constants.WristConstants.WRIST_kS, Constants.WristConstants.WRIST_kG, Constants.WristConstants.WRIST_kV);
 
         m_limitSwitch = new DigitalInput(Constants.WristConstants.limitSwitchPort);
-        SmartDashboard.putNumber("Wrist feedforward", 9999);
-        SmartDashboard.putNumber("Wrist speed", 9999);
-        SmartDashboard.putNumber("Wrist pidOutput", 9999);
+        // SmartDashboard.putNumber("Wrist feedforward", 9999);
+        // SmartDashboard.putNumber("Wrist speed", 9999);
+        // SmartDashboard.putNumber("Wrist pidOutput", 9999);
     }
 
     /* add if need to tune pid again
@@ -75,10 +75,10 @@ public class WristSubsystem extends SubsystemBase {
 
         double speed = pidOutput + feedForward;
 
-        SmartDashboard.putNumber("Wrist pidOutput", pidOutput);
-        SmartDashboard.putNumber("Wrist feedforward", feedForward);
-        SmartDashboard.putNumber("Wrist speed", speed);
-        SmartDashboard.putNumber("Wrist Position", m_wristMotor.getEncoder().getPosition());
+        // SmartDashboard.putNumber("Wrist pidOutput", pidOutput);
+        // SmartDashboard.putNumber("Wrist feedforward", feedForward);
+        // SmartDashboard.putNumber("Wrist speed", speed);
+        // SmartDashboard.putNumber("Wrist Position", m_wristMotor.getEncoder().getPosition());
 
         // ensure @param speed is within -1 to 1
         speed = (speed > 1) ? 1 : speed;
@@ -109,8 +109,8 @@ public class WristSubsystem extends SubsystemBase {
 
     // manual wrist control
     public void setWristSpeed(double speed) {
-        SmartDashboard.putNumber("Wrist Encoder Position", m_wristMotor.getEncoder().getPosition());
-        SmartDashboard.putNumber("Wrist Speed", speed);
+        // SmartDashboard.putNumber("Wrist Encoder Position", m_wristMotor.getEncoder().getPosition());
+        // SmartDashboard.putNumber("Wrist Speed", speed);
         
         if (m_limitSwitch.get()) 
         {

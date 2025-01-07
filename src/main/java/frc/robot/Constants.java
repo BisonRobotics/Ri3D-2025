@@ -30,7 +30,7 @@ public class Constants
 
         // PID values
         public static final double WRIST_PID_TOLERANCE = 0.1;
-        public static final double WRIST_kP = 0.021;
+        public static final double WRIST_kP = 0.021 * 1.5;
         public static final double WRIST_kI = 0;
         public static final double WRIST_kD = 0;
 
@@ -52,7 +52,7 @@ public class Constants
         public static final double L2 = -7;
         public static final double L1 = 0;
         public static final double HUMAN_PICKUP = 0.0;
-        public static final double PLACE_ALGAE = 0.0; // TODO: Change
+        public static final double PLACE_ALGAE = -8.04;
         public static final double PICKUP_ALGAE_L1 = -5.23;
         public static final double PICKUP_ALGAE_L2 = -5.23;
     }
@@ -62,6 +62,7 @@ public class Constants
         public static final int leaderPort = 11;
         public static final int followerPort = 6;
         public static final int limitSwitchPort = 0;
+        public static final double ElevatorOffset = -5; // adjust for chain slack
 
         // PID values
         public static final double PID_TOLERANCE = 0.1;
@@ -74,19 +75,19 @@ public class Constants
         public static final double kG = 0; // Feed forward was unneeded, brake mode is enough.
         public static final double kV = 0;
 
-        public static final double ELEVATOR_SPEED_MODIFIER = 0.25; // 25% speed
+        public static final double ELEVATOR_SPEED_MODIFIER = 0.35; // 35% speed
         public static final double MOTOR_BOTTOM = 0;
         public static final double MOTOR_TOP = -70;
     
         // LEVEL CONSTANTS (in meters)
         public static final double ELEVATOR_PARK_HEIGHT = 0.1; //where the elevator goes when idle
-        public static final double L3 = -64.3;
-        public static final double L2 = -37.59;
-        public static final double L1 = -4.71;
+        public static final double L3 = -64.3 + ElevatorOffset;
+        public static final double L2 = -37.59 + ElevatorOffset;
+        public static final double L1 = -4.71 + ElevatorOffset;
         public static final double HUMAN_PICKUP = -32.85;
-        public static final double PLACE_ALGAE = 0.0; // TODO: Change
-        public static final double PICKUP_ALGAE_L1 = -24.14;
-        public static final double PICKUP_ALGAE_L2 = -49.523;
+        public static final double PLACE_ALGAE = 0.0;
+        public static final double PICKUP_ALGAE_L1 = -24.14 + ElevatorOffset;
+        public static final double PICKUP_ALGAE_L2 = -49.523 + ElevatorOffset;
     }
 }
 
