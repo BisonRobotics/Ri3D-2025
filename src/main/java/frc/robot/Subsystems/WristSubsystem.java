@@ -4,6 +4,7 @@ import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkBase.ResetMode;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.config.SparkBaseConfig;
+import com.revrobotics.spark.config.SparkMaxConfig;
 
 import edu.wpi.first.math.controller.ArmFeedforward;
 import edu.wpi.first.math.controller.PIDController;
@@ -15,7 +16,6 @@ import frc.robot.Constants;
 
 public class WristSubsystem extends SubsystemBase{
     private SparkMax wristMotor;
-    private SparkBaseConfig wristMotorConfig;
     private PIDController wristPidController;
     private ArmFeedforward wristFeedForward;
     private DigitalInput m_limitSwitch;
@@ -27,6 +27,8 @@ public class WristSubsystem extends SubsystemBase{
     public WristSubsystem() 
     {
         wristMotor = new SparkMax(Constants.WristConstants.WRIST_MOTOR_ID, MotorType.kBrushless);
+
+        SparkMaxConfig wristMotorConfig = new SparkMaxConfig();
 
         wristMotorConfig.inverted(false);
         wristMotorConfig.idleMode(SparkBaseConfig.IdleMode.kBrake);
@@ -67,8 +69,8 @@ public class WristSubsystem extends SubsystemBase{
     // hold the wrist at a current pose using pid and feed forward. i really hope i dont need to use this
     public void setPosition(double positionRadians)
     {
+        // TODO: Implement limit enforcement
 
-        /* 
         inTolerance = wristPidController.atSetpoint();
 
         wristPidController.setSetpoint(positionRadians);
@@ -100,7 +102,7 @@ public class WristSubsystem extends SubsystemBase{
 
         // set the motor speed
         wristMotor.set(speed);
-        */
+        
     }
 
     public double getPosition()
@@ -120,12 +122,20 @@ public class WristSubsystem extends SubsystemBase{
 
     public void setWristSpeed(double speed)
     {
+        // TODO: Implement limit enforcement
+        SmartDashboard.putNumber("Wrist Encoder Position", wristMotor.getEncoder().getPosition());
+
+        if (m_limitSwitch.get() && speed > 0)
+        {
+            speed = 0;
+            zeroWrist();
+        }
+
         // ensure @param speed is within -1 to 1
-        /*
         speed = (speed > 1) ? 1 : speed;
         speed = (speed < -1) ? -1 : speed;
 
         wristMotor.set(speed);
-        */
+        
     }
 }

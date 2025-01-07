@@ -39,7 +39,7 @@ public class Constants
         public static final double WRIST_SPEED_MODIFIER = 0.1; // 10%
         
         // Limits
-        public static final double WRIST_LIMIT_TOP = 0;
+        public static final double WRIST_LIMIT_TOP = -13;
         public static final double WRIST_LIMIT_BOTTOM = 0;
     
         // LEVEL CONSTANTS
@@ -66,9 +66,9 @@ public class Constants
         public static final double kV = 0;
 
         public static final double ELEVATOR_SPEED_MODIFIER = 0.1; // 10%
-        public static final double ELEVATOR_HEIGHT =1.1684; // in meters
-        public static final double MOTOR_BOTTOM = 0; // TODO: Change
-        public static final double MOTOR_TOP = 10000; // TODO: Change
+        public static final double ELEVATOR_HEIGHT = 1.1684; // in meters
+        public static final double MOTOR_BOTTOM = 0;
+        public static final double MOTOR_TOP = -235;
         public static final double MOTOR_ENCODER_POSITION_COEFFICENT = ELEVATOR_HEIGHT / (MOTOR_TOP - MOTOR_BOTTOM);
     
         // LEVEL CONSTANTS

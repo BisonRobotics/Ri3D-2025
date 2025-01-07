@@ -22,7 +22,6 @@ public class moveElevatorCommand extends Command
     @Override
     public void execute()
     {
-        SmartDashboard.putNumber("Elevator Position", elevatorSubsystem.getPosition());
         elevatorSubsystem.moveElevator(m_speed.getAsDouble() * Constants.ElevatorConstants.ELEVATOR_SPEED_MODIFIER);
     }
 }

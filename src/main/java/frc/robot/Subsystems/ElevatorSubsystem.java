@@ -2,6 +2,7 @@ package frc.robot.Subsystems;
 
 import com.revrobotics.spark.SparkBase.ResetMode;
 import com.revrobotics.spark.SparkMax;
+import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.config.SparkMaxConfig;
@@ -53,6 +54,7 @@ public class ElevatorSubsystem extends SubsystemBase
         feedforward = new ArmFeedforward(Constants.ElevatorConstants.kS, Constants.ElevatorConstants.kG, Constants.ElevatorConstants.kV);
 
         m_limitSwitch = new DigitalInput(Constants.ElevatorConstants.limitSwitchPort);
+        
         SmartDashboard.putNumber("Elevator Speed Limit (not for position control)", e_speed_limit);
         SmartDashboard.putNumber("Elevator pidOutput", 9999);
         SmartDashboard.putNumber("Elevator feedforward", 9999);
@@ -70,10 +72,15 @@ public class ElevatorSubsystem extends SubsystemBase
 
     public void moveElevator(double speed)
     {
-        e_speed_limit = SmartDashboard.getNumber("Elevator Speed Limit (not for position control)", e_speed_limit);
-        if (speed > e_speed_limit){
-            speed = e_speed_limit;
+        // TODO: Implement height limit
+        SmartDashboard.putNumber("Elevator Position (from encoder)", m_leader.getEncoder().getPosition());
+
+        if (m_limitSwitch.get() && speed > 0)
+        {
+            speed = 0;
+            zeroElevator();
         }
+        
         m_leader.set(speed);
     }
 
@@ -82,8 +89,14 @@ public class ElevatorSubsystem extends SubsystemBase
         return m_leader.getEncoder().getPosition();
     }
     
+    public RelativeEncoder getEncoder()
+    {
+        return m_leader.getEncoder();
+    }
+    
     public void setPostion(double positionMeters)
     {
+        // TODO: Implement height limit
         inTolerance = pidController.atSetpoint();
 
         pidController.setSetpoint(positionMeters);
