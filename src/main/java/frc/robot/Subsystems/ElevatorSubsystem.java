@@ -35,12 +35,13 @@ public class ElevatorSubsystem extends SubsystemBase
 
         SparkMaxConfig leaderConfig = new SparkMaxConfig();
         leaderConfig.idleMode(SparkMaxConfig.IdleMode.kBrake);
-
+        
         SparkMaxConfig followerConfig = new SparkMaxConfig();
         followerConfig.idleMode(SparkMaxConfig.IdleMode.kBrake);
 
         followerConfig.follow(m_leader, true);
         
+        m_leader.configure(leaderConfig, ResetMode.kNoResetSafeParameters, PersistMode.kNoPersistParameters);
         m_follower.configure(followerConfig, ResetMode.kNoResetSafeParameters, PersistMode.kNoPersistParameters);
 
         //for tuning
