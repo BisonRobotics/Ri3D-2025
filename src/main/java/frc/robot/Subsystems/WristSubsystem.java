@@ -1,4 +1,5 @@
 package frc.robot.Subsystems;
+
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkBase.ResetMode;
@@ -14,18 +15,17 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import frc.robot.Constants;
 
-public class WristSubsystem extends SubsystemBase{
+public class WristSubsystem extends SubsystemBase {
     private SparkMax wristMotor;
     private PIDController wristPidController;
     private ArmFeedforward wristFeedForward;
     private DigitalInput m_limitSwitch;
-    
+
     private boolean inTolerance = false;
     public double w_kP_tune = 0.0;
-    public double w_PID_Tolerance_tune= 0.1;
+    public double w_PID_Tolerance_tune = 0.1;
 
-    public WristSubsystem() 
-    {
+    public WristSubsystem() {
         wristMotor = new SparkMax(Constants.WristConstants.WRIST_MOTOR_ID, MotorType.kBrushless);
 
         SparkMaxConfig wristMotorConfig = new SparkMaxConfig();
@@ -35,17 +35,20 @@ public class WristSubsystem extends SubsystemBase{
 
         wristMotor.configure(wristMotorConfig, ResetMode.kResetSafeParameters, PersistMode.kNoPersistParameters);
 
-        //for tuning
-        wristPidController = new PIDController(w_kP_tune, Constants.WristConstants.WRIST_kI, Constants.WristConstants.WRIST_kD);
+        // for tuning
+        wristPidController = new PIDController(w_kP_tune, Constants.WristConstants.WRIST_kI,
+                Constants.WristConstants.WRIST_kD);
         wristPidController.setTolerance(w_PID_Tolerance_tune);
         SmartDashboard.putNumber("Wrist kP", w_kP_tune);
         SmartDashboard.putNumber("Wrist PID Tolerance", w_PID_Tolerance_tune);
 
-        //put back in after tuning
-        // wristPidController = new PIDController(Constants.WristConstants.WRIST_kP, Constants.WristConstants.WRIST_kI, Constants.WristConstants.WRIST_kD);
+        // put back in after tuning
+        // wristPidController = new PIDController(Constants.WristConstants.WRIST_kP,
+        // Constants.WristConstants.WRIST_kI, Constants.WristConstants.WRIST_kD);
         // wristPidController.setTolerance(Constants.WristConstants.WRIST_PID_TOLERANCE);
 
-        wristFeedForward = new ArmFeedforward(Constants.WristConstants.WRIST_kS, Constants.WristConstants.WRIST_kG, Constants.WristConstants.WRIST_kV);
+        wristFeedForward = new ArmFeedforward(Constants.WristConstants.WRIST_kS, Constants.WristConstants.WRIST_kG,
+                Constants.WristConstants.WRIST_kV);
 
         m_limitSwitch = new DigitalInput(Constants.WristConstants.limitSwitchPort);
         SmartDashboard.putNumber("Wrist feedforward", 9999);
@@ -61,21 +64,22 @@ public class WristSubsystem extends SubsystemBase{
     }
 
     // zero the wrist encoder
-    public void zeroWrist()
-    {
+    public void zeroWrist() {
         wristMotor.getEncoder().setPosition(0);
     }
 
-    // hold the wrist at a current pose using pid and feed forward. i really hope i dont need to use this
-    public void setPosition(double positionRadians)
-    {
+    // hold the wrist at a current pose using pid and feed forward. i really hope i
+    // dont need to use this
+    public void setPosition(double positionRadians) {
         // TODO: Implement limit enforcement
 
         inTolerance = wristPidController.atSetpoint();
 
         wristPidController.setSetpoint(positionRadians);
 
-        double wristRadians = (wristMotor.getEncoder().getPosition() * 2 * Math.PI) / 75; // convert to radians then compensate for 75:1 gear ratio
+        double wristRadians = (wristMotor.getEncoder().getPosition() * 2 * Math.PI) / 75; // convert to radians then
+                                                                                          // compensate for 75:1 gear
+                                                                                          // ratio
         double wristVelocityRadSec = (wristMotor.getEncoder().getVelocity() * 2 * Math.PI) / 75;
 
         // calculate the pid using feed forward and set the motor to maintain position
@@ -92,52 +96,57 @@ public class WristSubsystem extends SubsystemBase{
         speed = (speed < -1) ? -1 : speed;
 
         // TODO: Test if positive speed is up the elevator and adjust if statement
-        if ((m_limitSwitch.get() && speed > 0) || (wristMotor.getEncoder().getPosition() < Constants.WristConstants.WRIST_LIMIT_TOP && speed > 0) || wristMotor.getEncoder().getPosition() > Constants.WristConstants.WRIST_LIMIT_BOTTOM)
-        {
-            speed = 0;
+        // if ((m_limitSwitch.get() && speed > 0) ||
+        // (wristMotor.getEncoder().getPosition() <
+        // Constants.WristConstants.WRIST_LIMIT_TOP && speed > 0) ||
+        // wristMotor.getEncoder().getPosition() >
+        // Constants.WristConstants.WRIST_LIMIT_BOTTOM)
+        // {
+        // speed = 0;
+        // }
+
+        if (m_limitSwitch.get()) {
+            zeroWrist();
         }
 
-        if (m_limitSwitch.get())
-        {
-            zeroWrist();
+        if (wristMotor.getEncoder().getPosition() <= Constants.WristConstants.WRIST_LIMIT_BOTTOM) {
+            speed = Math.min(speed, 0);
+        }
+
+        if (wristMotor.getEncoder().getPosition() <= Constants.WristConstants.WRIST_LIMIT_TOP) {
+            speed = Math.max(speed, 0);
         }
 
         // set the motor speed
         wristMotor.set(speed);
-        
+
     }
 
-    public double getPosition()
-    {
+    public double getPosition() {
         return wristMotor.getEncoder().getPosition();
     }
 
-    public boolean getInTolerance()
-    {
+    public boolean getInTolerance() {
         return inTolerance;
     }
 
-    public void stopWrist()
-    {
+    public void stopWrist() {
         wristMotor.stopMotor();
     }
 
-    public void setWristSpeed(double speed)
-    {
+    public void setWristSpeed(double speed) {
         SmartDashboard.putNumber("Wrist Encoder Position", wristMotor.getEncoder().getPosition());
 
-        if ((m_limitSwitch.get() && speed > 0) || wristMotor.getEncoder().getPosition() > Constants.WristConstants.WRIST_LIMIT_BOTTOM)
-        {
+        if ((m_limitSwitch.get() && speed > 0)
+                || wristMotor.getEncoder().getPosition() > Constants.WristConstants.WRIST_LIMIT_BOTTOM) {
             speed = 0;
         }
 
-        if ((wristMotor.getEncoder().getPosition() < Constants.WristConstants.WRIST_LIMIT_TOP) && speed > 0)
-        {
+        if ((wristMotor.getEncoder().getPosition() < Constants.WristConstants.WRIST_LIMIT_TOP) && speed > 0) {
             speed = 0;
         }
 
-        if (m_limitSwitch.get())
-        {
+        if (m_limitSwitch.get()) {
             zeroWrist();
         }
 
@@ -146,6 +155,6 @@ public class WristSubsystem extends SubsystemBase{
         speed = (speed < -1) ? -1 : speed;
 
         wristMotor.set(speed);
-        
+
     }
 }
