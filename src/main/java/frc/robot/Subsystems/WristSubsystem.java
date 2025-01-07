@@ -6,19 +6,17 @@ import com.revrobotics.spark.SparkBase.ResetMode;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.config.SparkBaseConfig;
 import com.revrobotics.spark.config.SparkMaxConfig;
-
 import edu.wpi.first.math.controller.ArmFeedforward;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-
 import frc.robot.Constants;
 
 public class WristSubsystem extends SubsystemBase {
-    private SparkMax wristMotor;
-    private PIDController wristPidController;
-    private ArmFeedforward wristFeedForward;
+    private SparkMax m_wristMotor;
+    private PIDController m_wristPidController;
+    private ArmFeedforward m_wristFeedForward;
     private DigitalInput m_limitSwitch;
 
     private boolean inTolerance = false;
@@ -26,29 +24,21 @@ public class WristSubsystem extends SubsystemBase {
     public double w_PID_Tolerance_tune= 0.1;
 
     public WristSubsystem() {
-        wristMotor = new SparkMax(Constants.WristConstants.WRIST_MOTOR_ID, MotorType.kBrushless);
+        m_wristMotor = new SparkMax(Constants.WristConstants.WRIST_MOTOR_ID, MotorType.kBrushless);
 
+        // config motor
         SparkMaxConfig wristMotorConfig = new SparkMaxConfig();
-
         wristMotorConfig.inverted(false);
         wristMotorConfig.idleMode(SparkBaseConfig.IdleMode.kBrake);
+        m_wristMotor.configure(wristMotorConfig, ResetMode.kResetSafeParameters, PersistMode.kNoPersistParameters);
 
-        wristMotor.configure(wristMotorConfig, ResetMode.kResetSafeParameters, PersistMode.kNoPersistParameters);
+        // Set up PID controller
+        m_wristPidController = new PIDController(Constants.WristConstants.WRIST_kP,
+        Constants.WristConstants.WRIST_kI, Constants.WristConstants.WRIST_kD);
+        m_wristPidController.setTolerance(Constants.WristConstants.WRIST_PID_TOLERANCE);
 
-        // for tuning
-        wristPidController = new PIDController(w_kP_tune, Constants.WristConstants.WRIST_kI,
-                Constants.WristConstants.WRIST_kD);
-        wristPidController.setTolerance(w_PID_Tolerance_tune);
-        SmartDashboard.putNumber("Wrist kP", w_kP_tune);
-        SmartDashboard.putNumber("Wrist PID Tolerance", w_PID_Tolerance_tune);
-
-        // put back in after tuning
-        // wristPidController = new PIDController(Constants.WristConstants.WRIST_kP,
-        // Constants.WristConstants.WRIST_kI, Constants.WristConstants.WRIST_kD);
-        // wristPidController.setTolerance(Constants.WristConstants.WRIST_PID_TOLERANCE);
-
-        wristFeedForward = new ArmFeedforward(Constants.WristConstants.WRIST_kS, Constants.WristConstants.WRIST_kG,
-                Constants.WristConstants.WRIST_kV);
+        // Set up feed forward 
+        m_wristFeedForward = new ArmFeedforward(Constants.WristConstants.WRIST_kS, Constants.WristConstants.WRIST_kG, Constants.WristConstants.WRIST_kV);
 
         m_limitSwitch = new DigitalInput(Constants.WristConstants.limitSwitchPort);
         SmartDashboard.putNumber("Wrist feedforward", 9999);
@@ -56,70 +46,57 @@ public class WristSubsystem extends SubsystemBase {
         SmartDashboard.putNumber("Wrist pidOutput", 9999);
     }
 
+    /* add if need to tune pid again
     public void periodic() {
         w_kP_tune = SmartDashboard.getNumber("Wrist kP", w_kP_tune);
         wristPidController.setP(w_kP_tune);
         w_PID_Tolerance_tune = SmartDashboard.getNumber("Wrist PID Tolerance", w_PID_Tolerance_tune);
         wristPidController.setTolerance(w_PID_Tolerance_tune);
     }
+    */
 
     // zero the wrist encoder
     public void zeroWrist() {
-        wristMotor.getEncoder().setPosition(0);
+        m_wristMotor.getEncoder().setPosition(0);
     }
 
-    // do NOT setPosition outisde of limit
+    // do NOT setPosition outisde of limit, there is nothing stopping it for going out of bounds
     public void setPosition(double position) {
 
-        inTolerance = wristPidController.atSetpoint();
+        inTolerance = m_wristPidController.atSetpoint();
 
-        wristPidController.setSetpoint(-position);
+        // set the goal for it to -goalPosition, the encoder pose is - and the speed wants a + value
+        m_wristPidController.setSetpoint(-position);
 
         // calculate the pid using feed forward and set the motor to maintain position
-        double pidOutput = wristPidController.calculate(wristMotor.getEncoder().getPosition(), position);
+        double pidOutput = m_wristPidController.calculate(m_wristMotor.getEncoder().getPosition(), position);
 
-        double feedForward = wristFeedForward.calculate(wristMotor.getEncoder().getPosition(), wristMotor.getEncoder().getVelocity());
+        double feedForward = m_wristFeedForward.calculate(m_wristMotor.getEncoder().getPosition(), m_wristMotor.getEncoder().getVelocity());
 
         double speed = pidOutput + feedForward;
 
         SmartDashboard.putNumber("Wrist pidOutput", pidOutput);
         SmartDashboard.putNumber("Wrist feedforward", feedForward);
         SmartDashboard.putNumber("Wrist speed", speed);
-        SmartDashboard.putNumber("Wrist Position", wristMotor.getEncoder().getPosition());
+        SmartDashboard.putNumber("Wrist Position", m_wristMotor.getEncoder().getPosition());
 
         // ensure @param speed is within -1 to 1
         speed = (speed > 1) ? 1 : speed;
         speed = (speed < -1) ? -1 : speed;
 
-        // TODO: Test if positive speed is up the elevator and adjust if statement
-        // if ((m_limitSwitch.get() && speed > 0) ||
-        // (wristMotor.getEncoder().getPosition() <
-        // Constants.WristConstants.WRIST_LIMIT_TOP && speed > 0) ||
-        // wristMotor.getEncoder().getPosition() >
-        // Constants.WristConstants.WRIST_LIMIT_BOTTOM)
-        // {
-        // speed = 0;
-        // }
-
+        // if the wrist is at its backmost pose, reset zero to compensate for encoder drifting through match
         if (m_limitSwitch.get()) {
             zeroWrist();
         }
 
-        /*if (wristMotor.getEncoder().getPosition() >= Constants.WristConstants.WRIST_LIMIT_BOTTOM) {
-            speed = Math.min(speed, 0);
-        }
-
-        if (wristMotor.getEncoder().getPosition() <= Constants.WristConstants.WRIST_LIMIT_TOP) {
-            speed = Math.max(speed, 0);
-        }*/
-
         // set the motor speed
-        wristMotor.set(speed);
+        m_wristMotor.set(speed);
 
     }
 
+    // get encoder pose
     public double getPosition() {
-        return wristMotor.getEncoder().getPosition();
+        return m_wristMotor.getEncoder().getPosition();
     }
 
     public boolean getInTolerance() {
@@ -127,11 +104,12 @@ public class WristSubsystem extends SubsystemBase {
     }
 
     public void stopWrist() {
-        wristMotor.stopMotor();
+        m_wristMotor.stopMotor();
     }
 
+    // manual wrist control
     public void setWristSpeed(double speed) {
-        SmartDashboard.putNumber("Wrist Encoder Position", wristMotor.getEncoder().getPosition());
+        SmartDashboard.putNumber("Wrist Encoder Position", m_wristMotor.getEncoder().getPosition());
         SmartDashboard.putNumber("Wrist Speed", speed);
         
         if (m_limitSwitch.get()) 
@@ -160,7 +138,7 @@ public class WristSubsystem extends SubsystemBase {
         speed = (speed > 1) ? 1 : speed;
         speed = (speed < -1) ? -1 : speed;
 
-        wristMotor.set(speed);
+        m_wristMotor.set(speed);
 
     }
 }
