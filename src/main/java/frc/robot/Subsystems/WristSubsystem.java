@@ -85,6 +85,7 @@ public class WristSubsystem extends SubsystemBase {
         SmartDashboard.putNumber("Wrist pidOutput", pidOutput);
         SmartDashboard.putNumber("Wrist feedforward", feedForward);
         SmartDashboard.putNumber("Wrist speed", speed);
+        SmartDashboard.putNumber("Wrist Position", wristMotor.getEncoder().getPosition());
 
         // ensure @param speed is within -1 to 1
         speed = (speed > 1) ? 1 : speed;
@@ -104,13 +105,13 @@ public class WristSubsystem extends SubsystemBase {
             zeroWrist();
         }
 
-        if (wristMotor.getEncoder().getPosition() >= Constants.WristConstants.WRIST_LIMIT_BOTTOM) {
+        /*if (wristMotor.getEncoder().getPosition() >= Constants.WristConstants.WRIST_LIMIT_BOTTOM) {
             speed = Math.min(speed, 0);
         }
 
         if (wristMotor.getEncoder().getPosition() <= Constants.WristConstants.WRIST_LIMIT_TOP) {
             speed = Math.max(speed, 0);
-        }
+        }*/
 
         // set the motor speed
         wristMotor.set(speed);
