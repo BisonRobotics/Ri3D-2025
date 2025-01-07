@@ -158,10 +158,6 @@ public class WristSubsystem extends SubsystemBase {
         //     speed = 0;
         // }
 
-        if (m_limitSwitch.get()) {
-            zeroWrist();
-        }
-
         // ensure @param speed is within -1 to 1
         speed = (speed > 1) ? 1 : speed;
         speed = (speed < -1) ? -1 : speed;
