@@ -26,7 +26,7 @@ public class Constants
     public static final class WristConstants 
     {
         public static final int WRIST_MOTOR_ID = 10; // TODO: !!!!! needs value !!!!!
-        public static final int limitSwitchPort = 0; // TODO: Set this value
+        public static final int limitSwitchPort = 1;
         // PID Constants TODO: tune
         public static final double WRIST_PID_TOLERANCE = 0.1;
         public static final double WRIST_kP = 0; // TODO: Tune
@@ -56,7 +56,7 @@ public class Constants
     {
         public static final int leaderPort = 11; // TODO: Change
         public static final int followerPort = 6;
-        public static final int limitSwitchPort = 0; // TODO: Change
+        public static final int limitSwitchPort = 0;
         public static final double PID_TOLERANCE = 0.1;
         public static final double kP = 0.0; // TODO: Tune
         public static final double kI = 0;
