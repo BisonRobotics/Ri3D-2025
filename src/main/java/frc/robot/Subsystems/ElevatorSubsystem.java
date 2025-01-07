@@ -82,6 +82,10 @@ public class ElevatorSubsystem extends SubsystemBase
         if ((m_limitSwitch.get() && speed > 0) || m_leader.getEncoder().getPosition() < Constants.ElevatorConstants.MOTOR_TOP || m_leader.getEncoder().getPosition() > Constants.ElevatorConstants.MOTOR_BOTTOM)
         {
             speed = 0;
+        }
+
+        if(m_limitSwitch.get())
+        {
             zeroElevator();
         }
         
