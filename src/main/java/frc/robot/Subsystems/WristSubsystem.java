@@ -22,8 +22,8 @@ public class WristSubsystem extends SubsystemBase {
     private DigitalInput m_limitSwitch;
 
     private boolean inTolerance = false;
-    public double w_kP_tune = 0.0;
-    public double w_PID_Tolerance_tune = 0.1;
+    public double w_kP_tune = 0.01;
+    public double w_PID_Tolerance_tune= 0.1;
 
     public WristSubsystem() {
         wristMotor = new SparkMax(Constants.WristConstants.WRIST_MOTOR_ID, MotorType.kBrushless);
