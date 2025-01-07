@@ -1,5 +1,6 @@
 package frc.robot.Commands;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
 import frc.robot.Subsystems.ElevatorSubsystem;
@@ -26,6 +27,7 @@ public class ElevatorToCommand extends Command
     @Override
     public void initialize()
     {
+        DriverStation.reportWarning("ELEVATOR CALLED", false);
         elevatorSubsystem.setPostion(elevatorHeight);
         wristSubsystem.setPosition(wristAngle);
     }

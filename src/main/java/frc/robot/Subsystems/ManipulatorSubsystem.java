@@ -3,7 +3,7 @@ import com.revrobotics.spark.SparkBase.ResetMode;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
-import com.revrobotics.spark.config.SparkBaseConfig;
+import com.revrobotics.spark.config.SparkMaxConfig;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
@@ -11,10 +11,6 @@ public class ManipulatorSubsystem extends SubsystemBase{
     private SparkMax topMotor; // Leader
     private SparkMax middleMotor; // Follower
     private SparkMax bottomMotor; // Follower
-
-    private SparkBaseConfig topMotorConfig;
-    private SparkBaseConfig middleMotorConfig;
-    private SparkBaseConfig bottomMotorConfig;
 
     private final double INTAKE_SPEED = Constants.ManipulatorConstants.INTAKE_SPEED;
     private final double HOLD_SPEED = Constants.ManipulatorConstants.HOLD_SPEED;
@@ -26,18 +22,24 @@ public class ManipulatorSubsystem extends SubsystemBase{
         bottomMotor = new SparkMax(Constants.ManipulatorConstants.BOTTOM_MANIPULATOR_MOTOR_ID, MotorType.kBrushless);
 
         //config top motor
+
+        SparkMaxConfig topMotorConfig = new SparkMaxConfig();
         topMotorConfig.inverted(false);
-        topMotorConfig.idleMode(SparkBaseConfig.IdleMode.kBrake);
+        topMotorConfig.idleMode(SparkMaxConfig.IdleMode.kBrake);
 
         // config middle motor
+
+        SparkMaxConfig middleMotorConfig = new SparkMaxConfig();
         middleMotorConfig.inverted(false);
         middleMotorConfig.follow(topMotor.getDeviceId(), true);
-        middleMotorConfig.idleMode(SparkBaseConfig.IdleMode.kBrake);
+        middleMotorConfig.idleMode(SparkMaxConfig.IdleMode.kBrake);
 
         // config bottom motor
+
+        SparkMaxConfig bottomMotorConfig = new SparkMaxConfig();
         bottomMotorConfig.inverted(false);
         bottomMotorConfig.follow(topMotor.getDeviceId());
-        bottomMotorConfig.idleMode(SparkBaseConfig.IdleMode.kBrake);
+        bottomMotorConfig.idleMode(SparkMaxConfig.IdleMode.kBrake);
 
         topMotor.configure(topMotorConfig, ResetMode.kResetSafeParameters, PersistMode.kNoPersistParameters);
         middleMotor.configure(middleMotorConfig, ResetMode.kResetSafeParameters, PersistMode.kNoPersistParameters);

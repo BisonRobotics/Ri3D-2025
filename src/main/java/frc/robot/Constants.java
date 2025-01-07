@@ -42,7 +42,7 @@ public class Constants
         public static final double WRIST_LIMIT_TOP = -13;
         public static final double WRIST_LIMIT_BOTTOM = 0;
     
-        // LEVEL CONSTANTS
+        // LEVEL CONSTANTS (radians)
         public static final double WRIST_PARK_ANGLE = 0; //where the wrist should go when idle
         public static final double L3 = 0.0; // TODO: Change
         public static final double L2 = 0.0; // TODO: Change
@@ -71,9 +71,9 @@ public class Constants
         public static final double MOTOR_TOP = -235;
         public static final double MOTOR_ENCODER_POSITION_COEFFICENT = ELEVATOR_HEIGHT / (MOTOR_TOP - MOTOR_BOTTOM);
     
-        // LEVEL CONSTANTS
+        // LEVEL CONSTANTS (in meters)
         public static final double ELEVATOR_PARK_HEIGHT = 0.1; //where the elevator goes when idle
-        public static final double L3 = 0.0; // TODO: Change
+        public static final double L3 = 0.2;
         public static final double L2 = 0.0; // TODO: Change
         public static final double HUMAN_PICKUP = 0.0; // TODO: Change
         public static final double PLACE_ALGAE = 0.0; // TODO: Change
