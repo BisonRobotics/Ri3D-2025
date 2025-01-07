@@ -109,7 +109,7 @@ public class WristSubsystem extends SubsystemBase {
             zeroWrist();
         }
 
-        if (wristMotor.getEncoder().getPosition() <= Constants.WristConstants.WRIST_LIMIT_BOTTOM) {
+        if (wristMotor.getEncoder().getPosition() >= Constants.WristConstants.WRIST_LIMIT_BOTTOM) {
             speed = Math.min(speed, 0);
         }
 
@@ -137,14 +137,26 @@ public class WristSubsystem extends SubsystemBase {
     public void setWristSpeed(double speed) {
         SmartDashboard.putNumber("Wrist Encoder Position", wristMotor.getEncoder().getPosition());
 
-        if ((m_limitSwitch.get() && speed > 0)
-                || wristMotor.getEncoder().getPosition() > Constants.WristConstants.WRIST_LIMIT_BOTTOM) {
-            speed = 0;
+        if (m_limitSwitch.get()) {
+            zeroWrist();
         }
 
-        if ((wristMotor.getEncoder().getPosition() < Constants.WristConstants.WRIST_LIMIT_TOP) && speed > 0) {
-            speed = 0;
+        if (wristMotor.getEncoder().getPosition() >= Constants.WristConstants.WRIST_LIMIT_BOTTOM) {
+            speed = Math.min(speed, 0);
         }
+
+        if (wristMotor.getEncoder().getPosition() <= Constants.WristConstants.WRIST_LIMIT_TOP) {
+            speed = Math.max(speed, 0);
+        }
+
+        // if ((m_limitSwitch.get() && speed > 0)
+        //         || wristMotor.getEncoder().getPosition() > Constants.WristConstants.WRIST_LIMIT_BOTTOM) {
+        //     speed = 0;
+        // }
+
+        // if ((wristMotor.getEncoder().getPosition() < Constants.WristConstants.WRIST_LIMIT_TOP) && speed > 0) {
+        //     speed = 0;
+        // }
 
         if (m_limitSwitch.get()) {
             zeroWrist();
