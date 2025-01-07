@@ -35,7 +35,7 @@ public class ElevatorSubsystem extends SubsystemBase
 
         SparkMaxConfig leaderConfig = new SparkMaxConfig();
         leaderConfig.idleMode(SparkMaxConfig.IdleMode.kBrake);
-        
+        leaderConfig.inverted(false); // failsafe
         SparkMaxConfig followerConfig = new SparkMaxConfig();
         followerConfig.idleMode(SparkMaxConfig.IdleMode.kBrake);
 
