@@ -10,6 +10,7 @@ import frc.robot.Subsystems.*;
 public class RobotContainer 
 {
 	private final CommandJoystick m_controller = new CommandJoystick(Constants.DrivetrainConstants.controller_port);
+	private final CommandJoystick m_testcontroller = new CommandJoystick(1);
 	private final DrivetrainSubsystem m_drivetrain = new DrivetrainSubsystem();
 	private final ElevatorSubsystem m_elevator = new ElevatorSubsystem();
 	private final WristSubsystem m_wrist = new WristSubsystem();
@@ -24,6 +25,10 @@ public class RobotContainer
 	{
 		m_drivetrain.setDefaultCommand(
 			new driveArcade(() -> m_controller.getY(), () -> m_controller.getX(), m_drivetrain));
+		
+		m_elevator.setDefaultCommand(new moveElevatorCommand(() -> m_testcontroller.getY(), m_elevator));
+
+		m_wrist.setDefaultCommand(new moveWristCommand(() -> m_testcontroller.getX(), m_wrist));
 		
 		m_controller.povUp().onTrue(new ElevatorToCommand(m_elevator, m_wrist, Constants.ElevatorConstants.L3, Constants.WristConstants.L3));
 
@@ -42,17 +47,6 @@ public class RobotContainer
 		m_controller.button(2).onTrue(new ManipulatorCommand(m_manipulator, true));
 
 		m_controller.button(10).onTrue(new ParallelCommandGroup(new DefaultElevatorCommand(m_elevator), new DefaultWristCommand(m_wrist)));
-
-
-		/*m_elevator.setDefaultCommand(
-			new moveElevatorCommand(
-				() -> m_testcontroller.getY(),
-				m_elevator));
-
-		m_wrist.setDefaultCommand(
-			new moveWristCommand(
-				() -> m_testcontroller.getX(),
-				m_wrist));*/
 	}
 
 	public Command getAutonomousCommand() 
