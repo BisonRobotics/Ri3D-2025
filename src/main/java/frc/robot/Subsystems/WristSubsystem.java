@@ -92,10 +92,10 @@ public class WristSubsystem extends SubsystemBase{
         speed = (speed < -1) ? -1 : speed;
 
         // TODO: Test if positive speed is up the elevator and adjust if statement
-        if (m_limitSwitch.get() && speed > 0 &&
+        if ((m_limitSwitch.get() && speed > 0) ||
             //verify it isnt trying to go out of its limits
-            wristMotor.getEncoder().getPosition() + speed < Constants.WristConstants.WRIST_LIMIT_TOP &&
-            wristMotor.getEncoder().getPosition() + speed > Constants.WristConstants.WRIST_LIMIT_BOTTOM)
+            wristMotor.getEncoder().getPosition() + speed > Constants.WristConstants.WRIST_LIMIT_TOP ||
+            wristMotor.getEncoder().getPosition() + speed < Constants.WristConstants.WRIST_LIMIT_BOTTOM)
         {
             speed = 0;
         }
