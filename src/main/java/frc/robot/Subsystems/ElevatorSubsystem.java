@@ -6,7 +6,6 @@ import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.config.SparkMaxConfig;
-
 import edu.wpi.first.math.controller.ArmFeedforward;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.DigitalInput;
@@ -24,9 +23,9 @@ public class ElevatorSubsystem extends SubsystemBase
     
     private boolean inTolerance = false;
 
-    public double kP_tune = 0.5;
-    public double PID_Tolerance_tune = 0.1;
-    public double e_speed_limit = 0.1;
+    public double kP_tune = Constants.ElevatorConstants.kP;
+    public double PID_Tolerance_tune = Constants.ElevatorConstants.PID_TOLERANCE;
+    public double e_speed_limit = Constants.ElevatorConstants.ELEVATOR_SPEED_MODIFIER;
 
     public ElevatorSubsystem()
     {
@@ -75,6 +74,7 @@ public class ElevatorSubsystem extends SubsystemBase
         pidController.setTolerance(PID_Tolerance_tune);
     }
 
+    // manual control of the elevator
     public void moveElevator(double speed)
     {
         SmartDashboard.putNumber("Elevator Position (from encoder)", m_leader.getEncoder().getPosition());
@@ -102,18 +102,20 @@ public class ElevatorSubsystem extends SubsystemBase
         return m_leader.getEncoder();
     }
     
-    // do NOT setPosition outside of limit
+    // do NOT setPosition outside of limit there is nothing stopping it for going out of bounds
     public void setPostion(double goalPosition)
     {
         inTolerance = pidController.atSetpoint();
 
+        // set the goal for it to -goalPosition, the encoder pose is - and the speed wants a + value
         pidController.setSetpoint(-goalPosition);
+
+        // calculate the pid using feed forward and combine the values
         double pidOutput = pidController.calculate(m_leader.getEncoder().getPosition(), goalPosition);
-
         double feedforwardOutput = feedforward.calculate(m_leader.getEncoder().getPosition(), m_leader.getEncoder().getVelocity());
-
         double speed = pidOutput + feedforwardOutput;
 
+        // put the values on the smart dashboard
         SmartDashboard.putNumber("Elevator pidOutput", pidOutput);
         SmartDashboard.putNumber("Elevator feedforward", feedforwardOutput);
         SmartDashboard.putNumber("Elevator speed", speed);
@@ -123,6 +125,7 @@ public class ElevatorSubsystem extends SubsystemBase
         speed = ( speed > 1) ? 1 :speed;
         speed = ( speed < -1) ? -1 : speed;
 
+        // if the elevator is at its bottom, reset zero to compensate for encoder drifting through match
         if (m_limitSwitch.get() && speed > 0)
         {
             speed = 0;
@@ -133,6 +136,7 @@ public class ElevatorSubsystem extends SubsystemBase
         m_leader.set(speed * Constants.ElevatorConstants.ELEVATOR_SPEED_MODIFIER);
     }
 
+    // return the elevator encoder position
     public double getElevatorPostion()
     {
        return m_leader.getEncoder().getPosition();
