@@ -132,7 +132,7 @@ public class ElevatorSubsystem extends SubsystemBase
         }
 
         // set the motor speed
-        m_leader.set(speed * 0.1);
+        m_leader.set(speed * Constants.ElevatorConstants.ELEVATOR_SPEED_MODIFIER);
     }
 
     public double getElevatorPostion()
