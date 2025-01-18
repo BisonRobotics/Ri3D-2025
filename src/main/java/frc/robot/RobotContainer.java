@@ -24,7 +24,8 @@ public class RobotContainer
 	private void configureBindings() 
 	{
 		m_drivetrain.setDefaultCommand(
-			new driveArcade(() -> m_controller.getY(), () -> m_controller.getTwist() / 2, m_drivetrain));
+			//if the outreach speed limit is removed from the DrivetrainSubsystem, put the /2 back for the x-axis
+			new driveArcade(() -> m_controller.getY(), () -> m_controller.getX() /* / 2*/, m_drivetrain));
 		
 		// for manual testing
 		// m_elevator.setDefaultCommand(new moveElevatorCommand(() -> m_testcontroller.getY(), m_elevator));
@@ -41,10 +42,11 @@ public class RobotContainer
 
 		m_controller.button(8).whileTrue(new ElevatorToCommand(m_elevator, m_wrist, Constants.ElevatorConstants.HUMAN_PICKUP, Constants.WristConstants.HUMAN_PICKUP)).onFalse(new DefaultWristCommand(m_wrist));
 		
-		m_controller.button(3).whileTrue(new ElevatorToCommand(m_elevator, m_wrist, Constants.ElevatorConstants.PICKUP_ALGAE_L1, Constants.WristConstants.PICKUP_ALGAE_L1)).onFalse(new DefaultWristCommand(m_wrist));
+		//these buttons are disabled to for outreach so the buttons at the top of the joystick will not control the wrist or elevator
+		/*m_controller.button(3).whileTrue(new ElevatorToCommand(m_elevator, m_wrist, Constants.ElevatorConstants.PICKUP_ALGAE_L1, Constants.WristConstants.PICKUP_ALGAE_L1)).onFalse(new DefaultWristCommand(m_wrist));
 
 		m_controller.button(4).whileTrue(new ElevatorToCommand(m_elevator, m_wrist, Constants.ElevatorConstants.PICKUP_ALGAE_L2, Constants.WristConstants.PICKUP_ALGAE_L2)).onFalse(new DefaultWristCommand(m_wrist));
-
+		*/
 		m_controller.button(7).whileTrue(new ElevatorToCommand(m_elevator, m_wrist, Constants.ElevatorConstants.L1, Constants.WristConstants.L1)).onFalse(new DefaultWristCommand(m_wrist));
 		
 		// coral intake, algae shoot

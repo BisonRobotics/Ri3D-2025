@@ -21,6 +21,9 @@ public class DrivetrainSubsystem extends SubsystemBase
     private SparkMax m_rightMotorFollower;
     private DifferentialDrive m_robotDrive;
 
+    //if the speed limit is removed, put the /2 back for the x-axis in line 27 of RobotContainer
+    public double driveSpeedLimit = 0.5;
+
     public DrivetrainSubsystem()
     {
         m_leftMotorLeader = new SparkMax(Constants.DrivetrainConstants.leftmotor_port, MotorType.kBrushless);
@@ -54,7 +57,7 @@ public class DrivetrainSubsystem extends SubsystemBase
 
     public void driveArcade(double left, double right)
     {
-        m_robotDrive.arcadeDrive(-left, -right);
+        m_robotDrive.arcadeDrive(-left*driveSpeedLimit, -right*driveSpeedLimit);
     }
 }
 

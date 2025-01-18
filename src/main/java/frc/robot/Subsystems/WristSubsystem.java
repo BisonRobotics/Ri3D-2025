@@ -18,8 +18,8 @@ public class WristSubsystem extends SubsystemBase {
     private PIDController m_wristPidController;
     private ArmFeedforward m_wristFeedForward;
     private DigitalInput m_limitSwitch;
-
     private boolean inTolerance = false;
+    public boolean disableWrist = false; //to disable the wrist for outreach, set this to true
     public double w_kP_tune = Constants.WristConstants.WRIST_kP;
     public double w_PID_Tolerance_tune= 0.1;
 
@@ -41,23 +41,29 @@ public class WristSubsystem extends SubsystemBase {
         m_wristFeedForward = new ArmFeedforward(Constants.WristConstants.WRIST_kS, Constants.WristConstants.WRIST_kG, Constants.WristConstants.WRIST_kV);
 
         m_limitSwitch = new DigitalInput(Constants.WristConstants.limitSwitchPort);
+
+        //SmartDashboard.putBoolean("Disable Wrist", disableWrist);
         // SmartDashboard.putNumber("Wrist feedforward", 9999);
         // SmartDashboard.putNumber("Wrist speed", 9999);
         // SmartDashboard.putNumber("Wrist pidOutput", 9999);
     }
 
-    /* add if need to tune pid again
+    
     public void periodic() {
+        /* add if need to tune pid again 
         w_kP_tune = SmartDashboard.getNumber("Wrist kP", w_kP_tune);
         wristPidController.setP(w_kP_tune);
         w_PID_Tolerance_tune = SmartDashboard.getNumber("Wrist PID Tolerance", w_PID_Tolerance_tune);
         wristPidController.setTolerance(w_PID_Tolerance_tune);
+        */
     }
-    */
+    
 
     // zero the wrist encoder
     public void zeroWrist() {
-        m_wristMotor.getEncoder().setPosition(0);
+        if ( disableWrist == false ){ //safety feature for outreach
+            m_wristMotor.getEncoder().setPosition(0);
+        }
     }
 
     // do NOT setPosition outisde of limit, there is nothing stopping it for going out of bounds
@@ -90,7 +96,11 @@ public class WristSubsystem extends SubsystemBase {
         }
 
         // set the motor speed
-        m_wristMotor.set(speed);
+        if(disableWrist == false){ //safety feature for outreah
+            m_wristMotor.set(speed);
+        } else {
+            m_wristMotor.set(0);
+        }
 
     }
 
@@ -137,8 +147,11 @@ public class WristSubsystem extends SubsystemBase {
         // ensure @param speed is within -1 to 1
         speed = (speed > 1) ? 1 : speed;
         speed = (speed < -1) ? -1 : speed;
-
-        m_wristMotor.set(speed);
+        if (disableWrist == false){ //safety feature for outreach
+            m_wristMotor.set(speed);
+        } else {
+            m_wristMotor.set(speed);
+        }
 
     }
 }

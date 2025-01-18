@@ -22,6 +22,7 @@ public class ElevatorSubsystem extends SubsystemBase
     private DigitalInput m_limitSwitch;
     
     private boolean inTolerance = false;
+    public boolean disableElevator =true; //this is set to true to disable the elevator entirely for outreach (does not effect the wrist)
 
     public double kP_tune = Constants.ElevatorConstants.kP;
     public double PID_Tolerance_tune = Constants.ElevatorConstants.PID_TOLERANCE;
@@ -57,7 +58,9 @@ public class ElevatorSubsystem extends SubsystemBase
         feedforward = new ArmFeedforward(Constants.ElevatorConstants.kS, Constants.ElevatorConstants.kG, Constants.ElevatorConstants.kV);
 
         m_limitSwitch = new DigitalInput(Constants.ElevatorConstants.limitSwitchPort);
-        
+        //SmartDashboard.putBoolean("Disable Elevator", disableElevator);
+        //SmartDashboard.putBoolean("Check Elevator disable", disableElevator);
+
         // SmartDashboard.putNumber("Elevator Speed Limit (not for position control)", e_speed_limit);
         // SmartDashboard.putNumber("Elevator pidOutput", 9999);
         // SmartDashboard.putNumber("Elevator feedforward", 9999);
@@ -70,26 +73,30 @@ public class ElevatorSubsystem extends SubsystemBase
         kP_tune = SmartDashboard.getNumber("Elevator kP", kP_tune);
         pidController.setP(kP_tune);
         PID_Tolerance_tune = SmartDashboard.getNumber("Elevator PID Tolerance", PID_Tolerance_tune);
-        
         pidController.setTolerance(PID_Tolerance_tune);
+
+        //disableElevator = SmartDashboard.getBoolean("Disable Elevator", disableElevator);
     }
 
     // manual control of the elevator
     public void moveElevator(double speed)
     {
         // SmartDashboard.putNumber("Elevator Position (from encoder)", m_leader.getEncoder().getPosition());
+        if (disableElevator == false){ //safety feature for outreach
+            if ((m_limitSwitch.get() && speed > 0) || m_leader.getEncoder().getPosition() < Constants.ElevatorConstants.MOTOR_TOP || m_leader.getEncoder().getPosition() > Constants.ElevatorConstants.MOTOR_BOTTOM)
+            {
+                speed = 0;
+            }
 
-        if ((m_limitSwitch.get() && speed > 0) || m_leader.getEncoder().getPosition() < Constants.ElevatorConstants.MOTOR_TOP || m_leader.getEncoder().getPosition() > Constants.ElevatorConstants.MOTOR_BOTTOM)
-        {
-            speed = 0;
+            if(m_limitSwitch.get())
+            {
+                zeroElevator();
+            }
+            
+            m_leader.set(speed);
+        } else {
+            m_leader.set(0);
         }
-
-        if(m_limitSwitch.get())
-        {
-            zeroElevator();
-        }
-        
-        m_leader.set(speed);
     }
 
     public double getPosition()
@@ -133,7 +140,12 @@ public class ElevatorSubsystem extends SubsystemBase
         }
 
         // set the motor speed
-        m_leader.set(speed * Constants.ElevatorConstants.ELEVATOR_SPEED_MODIFIER);
+        if( disableElevator == false){ //safety feature for outreach
+            //SmartDashboard.putBoolean("Check Elevator disable", disableElevator);
+            m_leader.set(speed * Constants.ElevatorConstants.ELEVATOR_SPEED_MODIFIER);
+        } else {
+            m_leader.set(0);
+        }
     }
 
     // return the elevator encoder position
@@ -149,7 +161,9 @@ public class ElevatorSubsystem extends SubsystemBase
 
     public void zeroElevator()
     {
-        m_leader.getEncoder().setPosition(0);
+        if (disableElevator == false){ //safety feature for outreach
+            m_leader.getEncoder().setPosition(0);
+        }
     }
 
     public boolean getInTolerance()
