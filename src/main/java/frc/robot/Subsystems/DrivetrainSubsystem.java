@@ -21,8 +21,10 @@ public class DrivetrainSubsystem extends SubsystemBase
     private SparkMax m_rightMotorFollower;
     private DifferentialDrive m_robotDrive;
 
+    //Outreach drive speed limit
+    //IMPORTANT
     //if the speed limit is removed, put the /2 back for the x-axis in line 27 of RobotContainer
-    public double driveSpeedLimit = 0.5;
+    public double driveSpeedLimit = 0.4; //0.4 means 40% speed
 
     public DrivetrainSubsystem()
     {
