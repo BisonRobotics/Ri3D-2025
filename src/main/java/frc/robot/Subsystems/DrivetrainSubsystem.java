@@ -22,9 +22,25 @@ public class DrivetrainSubsystem extends SubsystemBase
     private DifferentialDrive m_robotDrive;
 
     //Outreach drive speed limit
-    //IMPORTANT
-    //if the speed limit is removed, put the /2 back for the x-axis in line 27 of RobotContainer
+    //IMPORTANT: Change the number below to change the drive speed limit percentage
     public double driveSpeedLimit = 0.35; //0.5 means 50% speed
+    /* To deploy code
+     * 1. Ensure you are connected to the robot Wifi Ri3D_9999
+     * 2. Press ctrl-shift-p at the same time 
+     * 3. Type deploy (if there isn't a > symbol in the search bar, >deploy)
+     * 4. Select: WPILib: Deploy Robot Code
+     * 5. If it fails, repeat step 1
+     */
+
+    /* To pull code from github
+     * 1. Connect to Wifi with internet 
+     * 2. Select the branch thing on the left side in VS Code
+     * 3. Select the 3 dots above the message box (next to Source Control)
+     * 4. Select pull
+     * 5. If a pop up asks if you want to build, select yes
+     */
+
+    //if the speed limit is removed, put the /2 back for the x-axis in line 27 of RobotContainer
 
     public DrivetrainSubsystem()
     {
